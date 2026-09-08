@@ -359,6 +359,39 @@ On top of that:
   "n / 2 selected" counter.
 - **The nav bar and footer** were unstyled with an `<hr>`; both are now proper layout with a
   sticky, blurred header.
+- **The landing page was three unstyled headings and a button.** `Hero.jsx` is rebuilt with a
+  real type scale, an open/closed status pill, the countdown, a primary call to action and a
+  small stats strip. Its own busy work went with it: a nested loop running 50,000 iterations on
+  every render, plus three chained effects that split the description into characters and
+  counted its vowels for nothing.
+- **`PopupComp` was a fake modal.** It imported shadcn's `Dialog` and then rendered a
+  `<div style={{ border: "1px solid black" }}>` — an inline box with no overlay, no focus trap,
+  no Escape handling and nothing announcing it to assistive tech. It now uses the `Dialog` it
+  was already importing. Verified in the browser: `role="dialog"`, `aria-labelledby` and
+  `aria-describedby` set, an overlay present, focus moved inside on open, and both Escape and
+  the button return it to `data-state="closed"`.
+- **The landing department grid showed placeholder copy and linked to 404s.**
+  `BentoGridComp.jsx` (611 lines, roughly half commented-out) started from a hardcoded array of
+  Dropbox-style filler ("Use the calendar to filter your files by date", "Notifications" twice)
+  and then **mutated that module-level array at import time** from `reviews`. The rewrite read
+  `r.body` — a field the catalogue does not have — so every description resolved to
+  `undefined`, and it set `href` to a bare id rather than `/join/<id>`, so every card linked to
+  a page that 404s. It also had more departments (12) than slots in the array, and rendered via
+  `features.slice(5, 10)` and `features[10]` with hardcoded indices.
+
+  Replaced by `components/DepartmentsPreview.jsx`, which renders straight from `reviews`: the
+  departments shown are exactly the ones you can apply to, each card tinted with that
+  department's own `tone` from the catalogue. Verified in the browser: 12 cards, every `href`
+  a real `/join/<id>`, no empty descriptions.
+
+**Removed as dead and broken:** `AllDepartments.jsx` and `BentoGridComp.jsx` (nothing rendered
+them, and `BentoGridComp` was an `async` function component inside a `"use client"` file, which
+React does not allow); `DeptHero.jsx`, which called `setIsLoading(false)` in an effect and so
+crashed for any caller that did not pass the prop; the `/development` page, which was that
+caller — it was unreachable from any navigation, threw on load (caught by the new error
+boundary), and its two department links pointed at ids that are not in the catalogue; and the
+`technicalCards` / `nonTechnicalCards` arrays in `constants`, imported nowhere, whose
+`formLink` values were missing the `/join` prefix and would have 404'd if they ever had been.
 - **Applicant counts surfaced in the admin table** ("4 applicants shown · 1 shortlisted") —
   the component was already computing these numbers and throwing them away into unused state.
 - **A visible focus ring** for keyboard users is defined globally in `globals.css`.

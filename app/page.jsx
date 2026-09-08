@@ -5,6 +5,7 @@ import React, { useState } from "react";
 // Component imports
 import NavBar from "@/components/NavBar";
 import Hero from "@/components/Hero";
+import DepartmentsPreview from "@/components/DepartmentsPreview";
 import Footer from "@/components/Footer";
 import PopupComp from "@/components/PopupComp";
 import { authClient } from "@/lib/auth-client";
@@ -40,6 +41,7 @@ const Home = () => {
         />
       )}
       <Hero />
+      <DepartmentsPreview />
       <Footer />
     </main>
   );

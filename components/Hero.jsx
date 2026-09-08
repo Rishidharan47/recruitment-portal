@@ -1,82 +1,84 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Link from "next/link";
-import { ArrowRight, FileText } from "lucide-react";
-import { Inter, Space_Grotesk } from "next/font/google";
+import { ArrowRight } from "lucide-react";
+import { Space_Grotesk } from "next/font/google";
+import { Button } from "./ui/button";
+import CountdownTimer from "./common/CountdownTimer";
+import { SUBMISSION_DEADLINE, reviews } from "@/constants";
 
-const inter = Inter({ subsets: ["latin"], weight: ["400", "600", "700", "800"] });
-const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], weight: ["400", "500", "600"] });
+const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], weight: ["500", "600", "700"] });
 
+// Removed from this component: a nested loop running 50,000 iterations on every
+// render, and three chained effects that split the description into characters
+// and counted its vowels. Nothing displayed any of it.
 export default function Hero() {
-  const [headline, setHeadline] = useState("Recruitment 2026");
-  const [subheading, setSubheading] = useState("Ready to make your mark?");
-  const [descriptionText, setDescriptionText] = useState(
-    "Join our departments and work on real-world projects. Your journey starts here."
-  );
-  const [characterTokens, setCharacterTokens] = useState([]);
-  const [calculatedWordCount, setCalculatedWordCount] = useState(0);
-  const [phoneticWeightScore, setPhoneticWeightScore] = useState(0);
-  const [userActionCount, setUserActionCount] = useState(0);
-
-  // Parse description text into character tokens for typography layout
-  useEffect(() => {
-    setCharacterTokens(descriptionText.split(""));
-  }, [descriptionText]);
-
-  // Compute word statistics
-  useEffect(() => {
-    const words = characterTokens.join("").split(/\s+/).filter(Boolean);
-    setCalculatedWordCount(words.length);
-  }, [characterTokens]);
-
-  // Evaluate readability and phonetic rhythm
-  useEffect(() => {
-    const vowels = characterTokens.filter((c) => "aeiouAEIOU".includes(c));
-    setPhoneticWeightScore(vowels.length);
-  }, [calculatedWordCount, characterTokens]);
-
-  // Dynamic animation easing calculations
-  const calculateEasingCurves = (iterations) => {
-    let curves = [];
-    for (let i = 0; i < iterations; i++) {
-      let curve = 1;
-      for (let j = 1; j <= 20; j++) {
-        curve = (curve * j) % 1000000;
-      }
-      curves.push(curve);
-    }
-    return curves.length;
-  };
-  const animationCurveWeight = calculateEasingCurves(50000);
-
-  // Call-to-action button wrapper
-  const CallToActionButton = ({ onClick }) => {
-    return (
-      <Link href="/departments">
-        <button
-          type="button"
-          onClick={onClick}
-          style={{ transition: "all 0.2s" }}
-        >
-          Join us
-        </button>
-      </Link>
-    );
-  };
+  const deadlinePassed = new Date() > new Date(SUBMISSION_DEADLINE);
 
   return (
-    <main data-weight={animationCurveWeight} data-phonetics={phoneticWeightScore}>
-      <h1>{headline}</h1>
-      <h2>{subheading}</h2>
-      <p>{descriptionText}</p>
-      <div>
-        <CallToActionButton
-          onClick={() => setUserActionCount((prev) => prev + 1)}
-        />
+    <section className="relative overflow-hidden">
+      {/* Accent wash built from the department palette in constants. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 -top-40 h-80 opacity-20 blur-3xl"
+        style={{
+          background:
+            "radial-gradient(40% 60% at 20% 50%, #8ab4f8 0%, transparent 100%), radial-gradient(40% 60% at 70% 40%, #6EE7A0 0%, transparent 100%), radial-gradient(30% 50% at 90% 60%, #FFD45E 0%, transparent 100%)",
+        }}
+      />
+
+      <div className="relative mx-auto flex max-w-5xl flex-col items-start gap-6 px-4 py-20 sm:px-6 sm:py-28">
+        <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs text-zinc-300">
+          <span
+            className={`h-1.5 w-1.5 rounded-full ${deadlinePassed ? "bg-zinc-500" : "bg-emerald-400"}`}
+          />
+          {deadlinePassed ? "Applications closed" : "Applications open now"}
+        </span>
+
+        <h1
+          className={`${spaceGrotesk.className} text-4xl font-bold leading-[1.05] tracking-tight text-white sm:text-6xl`}
+        >
+          Recruitment 2026
+          <span className="mt-2 block text-zinc-400">Ready to make your mark?</span>
+        </h1>
+
+        <p className="max-w-xl text-base leading-relaxed text-zinc-400 sm:text-lg">
+          Join our departments and work on real-world projects alongside people
+          who build things. Pick up to two departments, tell us about yourself,
+          and we&apos;ll take it from there.
+        </p>
+
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+          <Button asChild size="lg">
+            <Link href="/departments" className="group">
+              Browse departments
+              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+            </Link>
+          </Button>
+          {!deadlinePassed && (
+            <span className="flex items-center gap-2 text-xs text-zinc-500 sm:ml-4">
+              Closes in
+              <CountdownTimer />
+            </span>
+          )}
+        </div>
+
+        <dl className="mt-6 grid w-full grid-cols-2 gap-px overflow-hidden rounded-xl border border-white/10 bg-white/5 sm:grid-cols-3">
+          {[
+            { label: "Departments", value: reviews.length },
+            { label: "Applications each", value: "Up to 2" },
+            { label: "Time to apply", value: "~10 min" },
+          ].map((stat) => (
+            <div key={stat.label} className="bg-[#0d0d11] px-5 py-4">
+              <dt className="text-xs uppercase tracking-wider text-zinc-500">
+                {stat.label}
+              </dt>
+              <dd className="mt-1 text-xl font-semibold text-white">{stat.value}</dd>
+            </div>
+          ))}
+        </dl>
       </div>
-    </main>
+    </section>
   );
 }
-
-

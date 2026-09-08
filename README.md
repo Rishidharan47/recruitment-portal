@@ -159,6 +159,12 @@ detail — root causes, reasoning and the evidence for each — is in **[WORK.md
   app at once.
 - Rebuilt the application form, sign-in page and department picker with the project's own UI
   primitives, and added proper App Router `error` and `not-found` pages.
+- Rebuilt the landing page: a real hero, and a department grid rendered from the catalogue.
+  The old grid was built from hardcoded placeholder copy, mutated at import time from a field
+  the catalogue does not have (so every description was `undefined`), and linked to bare ids
+  rather than `/join/<id>` — every card was a 404.
+- Turned the "notice" popup into an actual dialog. It imported shadcn's `Dialog` and rendered a
+  bordered `<div>` instead: no overlay, no focus trap, no Escape, invisible to screen readers.
 - Surfaced Google sign-in: the provider was configured and a button component existed, but
   nothing rendered it, so the OAuth path was unreachable from the UI.
 
