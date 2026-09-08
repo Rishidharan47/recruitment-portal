@@ -266,6 +266,17 @@ On top of that:
 - **The sign-in page** imported `Card`, `Input`, `Label` and `Button` and then rendered raw
   HTML with inline styles. Rebuilt into a real card with a sign-in / create-account tab
   switcher and correct `autoComplete` attributes.
+- **Google sign-in was unreachable.** `lib/auth.js` configures the Google provider and
+  `components/SignInButton.jsx` implements the button, but nothing in the app ever rendered
+  that component — so the only way in was email/password, on a portal meant to be used with
+  institute Google accounts. The button is now on the sign-in page below an "or" divider.
+  `SignInButton` also accepted a `callbackURL` prop and then ignored it in favour of a
+  hardcoded `"/"`; it now honours it, disables itself while redirecting, and surfaces failures
+  as a toast instead of only a console error. Verified as far as it can be locally:
+  `POST /api/auth/sign-in/social` returns a correctly-formed
+  `accounts.google.com/o/oauth2/v2/auth` URL with the configured client id, scopes and state.
+  Completing the consent screen needs real Google OAuth credentials, so that last hop is
+  untested here.
 - **The departments page** was an unstyled `<ul>` of checkboxes. Now a responsive two-column
   grid of selectable cards with clear selected / already-submitted states and a live
   "n / 2 selected" counter.

@@ -16,6 +16,7 @@ import { Label } from "@/components/ui/label";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
 import DWASFWLoader from "@/components/GDGLoader";
+import SignInButton from "@/components/SignInButton";
 
 const bricolageGrotesque = Bricolage_Grotesque({
   subsets: ["latin"],
@@ -200,6 +201,17 @@ export default function SignInPage() {
                   : "Sign in"}
             </Button>
           </form>
+
+          <div className="flex items-center gap-3">
+            <span className="h-px flex-1 bg-white/10" />
+            <span className="text-xs uppercase tracking-wider text-zinc-500">or</span>
+            <span className="h-px flex-1 bg-white/10" />
+          </div>
+
+          {/* The Google provider is configured in lib/auth.js and this button
+              already existed, but nothing ever rendered it - so the OAuth path
+              was unreachable from the UI. */}
+          <SignInButton className="w-full" />
         </CardContent>
       </Card>
     </main>
