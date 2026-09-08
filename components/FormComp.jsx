@@ -406,9 +406,15 @@ const FormComp = ({ dept1, dept2 }) => {
   };
 
   return (
-    <main className="mx-auto w-full max-w-6xl px-4 pb-28 pt-10 sm:px-6">
+    // A <div>, not a <main>: the page that renders this already provides the
+    // main landmark, and nesting <main> inside <main> is invalid.
+    <div className="mx-auto w-full max-w-6xl px-4 pb-28 pt-10 sm:px-6">
       {errorMessage && !isSubmitting && (
-        <div className="mb-6 rounded-lg border border-red-500/30 bg-red-500/10 p-4">
+        <div
+          role="alert"
+          aria-live="assertive"
+          className="mb-6 rounded-lg border border-red-500/30 bg-red-500/10 p-4"
+        >
           <p className="text-sm text-red-300">{errorMessage}</p>
           <button
             type="button"
@@ -684,7 +690,7 @@ const FormComp = ({ dept1, dept2 }) => {
           </div>
         </div>
       </div>
-    </main>
+    </div>
   );
 };
 

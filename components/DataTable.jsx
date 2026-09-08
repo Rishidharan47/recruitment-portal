@@ -175,10 +175,16 @@ const DataTable = ({ data }) => {
         return [
           {
             Header: ({ getToggleAllRowsSelectedProps }) => (
-              <CheckBoxComp {...getToggleAllRowsSelectedProps()} />
+              <CheckBoxComp
+                label="Select all applicants on this page"
+                {...getToggleAllRowsSelectedProps()}
+              />
             ),
             Cell: ({ row }) => (
-              <CheckBoxComp {...row.getToggleRowSelectedProps()} />
+              <CheckBoxComp
+                label={`Select ${row.original?.Name || "applicant"}`}
+                {...row.getToggleRowSelectedProps()}
+              />
             ),
           },
           ...columns,
@@ -362,6 +368,11 @@ const DataTable = ({ data }) => {
 
       <div className="overflow-x-auto rounded-xl border border-white/10">
         <Table {...getTableProps()}>
+          <caption className="sr-only">
+            Recruitment applicants. {applicantTotalCount} shown,{" "}
+            {shortlistedApplicantCount} shortlisted. Use the Shortlisted column
+            button to change an applicant&apos;s status.
+          </caption>
           <TableHeader>
             {headerGroups.map((hg) => {
               // react-table returns `key` inside its props objects; spreading

@@ -112,6 +112,7 @@ export default function SignInPage() {
 
   return (
     <main
+      id="main-content"
       className={`${bricolageGrotesque.variable} ${spaceGrotesk.variable} flex min-h-screen items-center justify-center bg-[#0d0d11] px-4 py-12`}
     >
       <Card className="w-full max-w-md border-white/10 bg-white/[0.03] text-white">

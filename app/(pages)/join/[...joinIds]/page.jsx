@@ -11,6 +11,7 @@ import FormComp from "@/components/FormComp";
 import Footer from "@/components/Footer";
 import { authClient } from "@/lib/auth-client";
 import { Button } from "@/components/ui/button";
+import Loader from "@/components/GDGLoader";
 
 const JoinDepartmentPage = ({ params }) => {
   const router = useRouter();
@@ -30,13 +31,13 @@ const JoinDepartmentPage = ({ params }) => {
 
   if (isPending) {
     return (
-      <main>
+      <>
         <NavBar />
-        <div className="flex min-h-[60vh] items-center justify-center">
-          <span className="h-10 w-10 animate-spin rounded-full border-2 border-white/20 border-t-white" />
-        </div>
+        <main id="main-content">
+          <Loader />
+        </main>
         <Footer />
-      </main>
+      </>
     );
   }
 
@@ -45,25 +46,27 @@ const JoinDepartmentPage = ({ params }) => {
   }
 
   return (
-    <main>
+    <>
       <NavBar />
-      {user ? (
-        <FormComp dept1={departments[0]} dept2={departments[1]} />
-      ) : (
-        <section className="flex min-h-[60vh] flex-col items-center justify-center gap-4 px-6 text-center">
-          <h2 className="text-2xl font-semibold text-white">
-            Authentication Required
-          </h2>
-          <p className="text-gray-400">
-            Please sign in to access the application form.
-          </p>
-          <Button type="button" onClick={() => router.push("/auth/signin")}>
-            Sign In
-          </Button>
-        </section>
-      )}
+      <main id="main-content">
+        {user ? (
+          <FormComp dept1={departments[0]} dept2={departments[1]} />
+        ) : (
+          <section className="flex min-h-[60vh] flex-col items-center justify-center gap-4 px-6 text-center">
+            <h1 className="text-2xl font-semibold text-white">
+              Authentication Required
+            </h1>
+            <p className="text-zinc-400">
+              Please sign in to access the application form.
+            </p>
+            <Button type="button" onClick={() => router.push("/auth/signin")}>
+              Sign In
+            </Button>
+          </section>
+        )}
+      </main>
       <Footer />
-    </main>
+    </>
   );
 };
 

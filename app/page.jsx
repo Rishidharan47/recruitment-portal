@@ -30,8 +30,10 @@ const Home = () => {
 
   const user = session?.user;
 
+  // NavBar renders the banner landmark and Footer the contentinfo one, so
+  // neither belongs inside <main>.
   return (
-    <main>
+    <>
       <NavBar />
       {!isPending && !user && (
         <PopupComp
@@ -40,10 +42,12 @@ const Home = () => {
           PopupData={POPUP_DATA}
         />
       )}
-      <Hero />
-      <DepartmentsPreview />
+      <main id="main-content">
+        <Hero />
+        <DepartmentsPreview />
+      </main>
       <Footer />
-    </main>
+    </>
   );
 };
 

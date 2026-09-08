@@ -16,17 +16,20 @@ export default async function AdminPage() {
   if (error === "unauthenticated") redirect("/auth/signin");
   if (error) {
     return (
-      <main>
+      <>
         <NavBar />
-        <div className="flex min-h-[60vh] items-center justify-center px-6 text-center">
+        <main
+          id="main-content"
+          className="flex min-h-[60vh] items-center justify-center px-6 text-center"
+        >
           <div>
             <h1 className="text-2xl font-semibold">Access denied</h1>
             <p className="mt-2 text-muted-foreground">
               You are not authorised to view this page.
             </p>
           </div>
-        </div>
-      </main>
+        </main>
+      </>
     );
   }
 
@@ -39,9 +42,11 @@ export default async function AdminPage() {
   }));
 
   return (
-    <main>
+    <>
       <NavBar />
-      <AdminContent applicants={applicants} />
-    </main>
+      <main id="main-content">
+        <AdminContent applicants={applicants} />
+      </main>
+    </>
   );
 }

@@ -399,6 +399,33 @@ On top of that:
   windowed pager with first/last and ellipses, plus a "Showing 7 – 9 of 10 applicants" summary.
   Verified by dropping the page size to 3: four pages, correct ranges on each.
 
+- **Loading and empty states.** The loader was a bare `<p>Loading...</p>`; it is now a proper
+  spinner announced with `role="status"`, reused by the route-level loading file, the sign-out
+  page (which showed unstyled "Signing out...") and the join page. The admin table gained an
+  empty state with a reset action, rather than rendering an empty grid when filters match
+  nothing.
+- **Mobile verified at 375px** on the landing, departments and admin pages: zero horizontal
+  page overflow on all three, with the dense nine-column applicant table scrolling inside its
+  own container rather than stretching the page.
+
+**Accessibility pass:**
+
+- A skip link, visible on focus, jumping past the header to `#main-content`.
+- **Landmark structure fixed.** Pages wrapped `NavBar` (which renders `<header>`) and `Footer`
+  inside `<main>`, so the banner and contentinfo landmarks were nested in the main one; and
+  `FormComp` rendered its own `<main>` *inside* the join page's `<main>`, which is invalid
+  HTML. Header and footer are now siblings of a single `<main id="main-content">` per page.
+- The admin table's select-all and per-row checkboxes render with no visible text and had no
+  accessible name — a screen reader announced them only as "checkbox". They now carry labels
+  ("Select all applicants on this page", "Select Test Applicant"), the table has an off-screen
+  caption summarising its contents, and every header cell is `scope="col"`.
+- The form's error banner is `role="alert" aria-live="assertive"`, so a failed submission is
+  announced rather than only appearing on screen.
+- The "Authentication required" section on the join page used an `<h2>` with no `<h1>` above
+  it; it is now the page's `<h1>`.
+- A global `:focus-visible` ring (added earlier with the design tokens) means keyboard focus is
+  visible on every control.
+
 **Deliberately not built from the references:** navigation items for pages that don't exist
 (Timeline, FAQ, an admin sidebar with Dashboard/Analytics/Communications/Settings); "Under
 review" and "Rejected" statuses, since an application carries a `shortlisted` boolean and

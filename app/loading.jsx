@@ -1,16 +1,8 @@
-"use client";
-
 // React import
 import React from "react";
 // Component import
-import DWASFWLoader from "@/components/GDGLoader";
+import Loader from "@/components/GDGLoader";
 
-const loading = () => {
-  return (
-    <div>
-      <DWASFWLoader />
-    </div>
-  );
-};
+const Loading = () => <Loader />;
 
-export default loading;
+export default Loading;

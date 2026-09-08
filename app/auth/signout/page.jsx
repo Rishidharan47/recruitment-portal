@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
+import Loader from "@/components/GDGLoader";
 
 export default function SignOutPage() {
   const router = useRouter();
@@ -24,9 +25,5 @@ export default function SignOutPage() {
     performSignOut();
   }, [router]);
 
-  return (
-    <div>
-      <p>Signing out...</p>
-    </div>
-  );
-} 
+  return <Loader label="Signing you out..." />;
+}

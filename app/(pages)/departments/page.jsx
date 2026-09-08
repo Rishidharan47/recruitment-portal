@@ -135,12 +135,12 @@ const DepartmentsListPage = () => {
   };
 
   return (
-    <main
+    <div
       className={`${bricolageGrotesque.variable} ${spaceGrotesk.variable} min-h-screen`}
     >
       <NavBar />
 
-      <div className="mx-auto w-full max-w-6xl px-4 py-12 sm:px-6">
+      <main id="main-content" className="mx-auto w-full max-w-6xl px-4 py-12 sm:px-6">
         <header className="mb-10 flex flex-wrap items-start justify-between gap-6">
           <div>
             <p className="text-[11px] uppercase tracking-widest text-zinc-500">
@@ -201,10 +201,10 @@ const DepartmentsListPage = () => {
             ))}
           </ul>
         </section>
-      </div>
+      </main>
 
       <Footer />
-    </main>
+    </div>
   );
 };
 
