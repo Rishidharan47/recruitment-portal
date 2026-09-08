@@ -168,6 +168,29 @@ detail — root causes, reasoning and the evidence for each — is in **[WORK.md
 - Surfaced Google sign-in: the provider was configured and a button component existed, but
   nothing rendered it, so the OAuth path was unreachable from the UI.
 
+### Cost and scale
+
+- The admin page read **every applicant document, with every answer, on every page load**, then
+  paginated in the browser. It now loads a page of 50 with a field mask that excludes the large
+  `Questions` field, takes its header totals from Firestore's count aggregation (no document
+  reads), loads further pages on demand by cursor, and fetches full records with answers only
+  when someone exports.
+- Composite indexes are declared in `firestore.indexes.json` instead of existing only in
+  whatever console someone once clicked.
+
+### Reliability
+
+- The bulk mailer sent inside one `try` around the whole loop, so the first failure aborted the
+  batch: earlier recipients got their mail, later ones silently did not, and the response could
+  not say which. Sends are now attempted per recipient and the route reports exactly who failed.
+
+### Tests
+
+`npm test` runs a vitest suite covering server-side validation (unknown fields dropped,
+`shortlisted` unspoofable, email taken from the session) and the pagination window, including a
+regression test for a bug where the first page vanished from the pager. CI runs the tests and
+the build on every push.
+
 ### Verification
 
 Checked against a real (emulated) Firestore rather than by inspection: a full signup → apply →

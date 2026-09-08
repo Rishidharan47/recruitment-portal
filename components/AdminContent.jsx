@@ -3,7 +3,7 @@ import React from "react";
 import { authClient } from "@/lib/auth-client";
 import DataTable from "./DataTable";
 
-const AdminContent = ({ applicants }) => {
+const AdminContent = ({ applicants, nextCursor, stats }) => {
   const { data: session, isPending } = authClient.useSession();
 
   if (isPending) return null;
@@ -38,7 +38,9 @@ const AdminContent = ({ applicants }) => {
     );
   }
 
-  return <DataTable data={applicants} />;
+  return (
+    <DataTable data={applicants} initialCursor={nextCursor} stats={stats} />
+  );
 };
 
 export default AdminContent;

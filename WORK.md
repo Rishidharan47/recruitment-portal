@@ -239,7 +239,68 @@ is another one that has to stay auth-correct forever.
 
 ---
 
-## 3. Performance (client)
+## 3. Cost and scale on the admin path
+
+`/admin` read **every applicant document, including every answer, on every page load**, then
+paginated and filtered them in the browser. Two separate costs: Firestore bills per document
+read, so a refresh with 2,000 applicants is 2,000 reads; and the whole dataset — every answer
+to every question — was serialised into the page payload and shipped to the browser, where the
+table never displays it.
+
+`lib/adminApplicants.js` now separates the two jobs:
+
+- **The table loads a page of 50**, ordered newest-first, with `.select(...)` limited to the
+  columns the table renders. `Questions` — by far the largest field — is not fetched for the
+  table at all.
+- **Counts come from Firestore's count aggregation** (`collection.count().get()`), so the
+  header totals describe every applicant without reading a single document.
+- **Further pages load on demand** through the existing admin API with a cursor, and the header
+  shows "Loaded" against the true total so it is clear the table holds a subset.
+- **Export fetches the full records, with answers, only when someone exports.** That meant
+  replacing `react-csv`'s `CSVLink` (which needs the data up front) with a button that fetches
+  and builds the file. The expensive query now runs when it is actually wanted.
+
+Paging uses the cursor document rather than a `createdAt` value, so two applications submitted
+in the same millisecond can't be skipped or repeated at a page boundary. Verified against the
+emulator by walking every page: 4 pages of 3, 10 rows total, zero duplicates.
+
+**A constraint worth knowing:** Firestore omits documents that lack the field being ordered on,
+so a document written without `createdAt` would silently not appear in the admin table. Every
+document this app writes sets it; anything imported by hand must too. This is noted in
+`lib/adminApplicants.js`.
+
+**Indexes are now in version control.** `firestore.indexes.json` declares the composite indexes
+the filtered and ordered queries need (Email, Department and shortlisted, each paired with
+`createdAt`), so a fresh project can be provisioned reproducibly instead of relying on indexes
+someone once created by clicking a link in an error message.
+
+## 4. The bulk mailer
+
+`/api/send-email` sent sequentially in a `for` loop with a single `try` around the whole batch,
+so **the first failure aborted the run**: recipients before it received their mail, everyone
+after silently did not, and the response — a flat "Failed to send emails" — gave no way to tell
+which was which. Re-running the batch would then double-mail everyone who had already received
+it.
+
+Each send is now attempted independently and the route reports what happened: `200` when all
+succeeded, `207` with the per-recipient failure list when some did not, `502` when none did.
+The admin UI shows a warning listing the addresses it could not reach instead of a success
+toast.
+
+## 5. Tests and CI
+
+There were no tests. `vitest` now covers the two pieces of pure logic where a regression would
+be both easy and expensive:
+
+- `tests/validateApplication.test.js` (19 tests) — every rejection rule, plus the three
+  properties that matter most: unknown fields are dropped rather than stored, `shortlisted`
+  cannot be set by the request, and `Email` always comes from the session.
+- `tests/pagination.test.js` (7 tests) — including a regression test for the bug the old pager
+  had, where page 1 disappeared once you moved past it.
+
+`.github/workflows/ci.yml` runs `npm test` and `npm run build` on every push and pull request.
+
+## 6. Performance (client)
 
 The codebase contained a family of expensive functions whose results were only ever written to
 invisible `data-*` attributes, each recomputed on **every render**:
@@ -281,7 +342,7 @@ All removed. Alongside them:
 
 ---
 
-## 4. Correctness and code quality
+## 7. Correctness and code quality
 
 - **`components/CheckBoxComp.jsx` destructured `intermediate`** — react-table passes
   `indeterminate`. The typo meant the flag was spread onto the DOM `<input>` (React warned
@@ -320,7 +381,7 @@ All removed. Alongside them:
 
 ---
 
-## 5. UI / UX
+## 8. UI / UX
 
 **The design system was never wired up.** `tailwind.config.js` maps every shadcn/ui colour
 (`background`, `primary`, `border`, `input`, `ring`, `muted`, …) to `hsl(var(--token))`, and
@@ -448,7 +509,7 @@ boundary), and its two department links pointed at ids that are not in the catal
 
 ---
 
-## 6. Build / tooling
+## 9. Build / tooling
 
 `next build` and `next dev` both write to `.next`, so running a production build while the dev
 server is up deletes the chunks it is serving and every page starts 404-ing its CSS and JS —

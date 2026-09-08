@@ -8,7 +8,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
  * always rendered `pageIndex, +1, +2`, so the first page disappeared as soon as
  * you moved past it and the list ran short near the end.
  */
-const pageWindow = (current, total) => {
+export const pageWindow = (current, total) => {
   if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
 
   const pages = new Set([1, total, current, current - 1, current + 1]);

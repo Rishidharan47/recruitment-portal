@@ -39,55 +39,76 @@ export async function POST(req) {
         );
     }
 
-    try {
-        for (const recipient of recipients) {
-            let depart = recipient.Department;
-            if (depart === "Video Editing") {
-                depart = "Photography";
-            }
-            const dept = reviews.find((item) => item.name === depart);
+    const departmentLabel = (recipient) => {
+        let depart = recipient.Department;
+        if (depart === "Video Editing") depart = "Photography";
 
-            // An applicant whose department no longer exists in the list used
-            // to crash the whole batch here on `dept.name`.
-            let deptName = dept?.name ?? depart ?? "";
-            if (
-                deptName === "Web Development" ||
-                deptName === "App Development"
-            ) {
-                deptName = "Development Department";
-            }
+        const dept = reviews.find((item) => item.name === depart);
+        // An applicant whose department is no longer in the catalogue used to
+        // crash the whole batch here on `dept.name`.
+        let deptName = dept?.name ?? depart ?? "";
 
-            if (deptName === "Photography" || deptName === "Video Editing") {
-                deptName = "Photography & Video Editing Department";
-            }
+        if (deptName === "Web Development" || deptName === "App Development") {
+            deptName = "Development Department";
+        }
+        if (deptName === "Photography" || deptName === "Video Editing") {
+            deptName = "Photography & Video Editing Department";
+        }
+        return deptName;
+    };
 
-            let generalTemp = `
+    const sendOne = async (recipient) => {
+        if (!recipient?.Email) throw new Error("Recipient has no email address");
+
+        const html = `
                 <div>
                     ${payloadData.body}
                 </div>
-                `;
+                `
+            .replace(/#name/g, recipient.Name ?? "")
+            .replace(/#dept/g, departmentLabel(recipient));
 
-            generalTemp = generalTemp.replace(/#name/g, recipient.Name);
-            generalTemp = generalTemp.replace(/#dept/g, deptName);
+        await transporter.sendMail({
+            from: process.env.EMAIL_USERNAME,
+            to: recipient.Email,
+            subject: payloadData.subject,
+            html,
+        });
+    };
 
-            const mailOptions = {
-                from: process.env.EMAIL_USERNAME,
-                to: recipient.Email,
-                subject: payloadData.subject,
-                html: generalTemp,
-            };
+    // Sequential (a shared mailbox will throttle a burst), but one failure no
+    // longer aborts the run. Previously a single bad address stopped the loop:
+    // everyone before it received the mail, everyone after silently did not,
+    // and the response gave no way to tell which was which.
+    const sent = [];
+    const failed = [];
 
-            await transporter.sendMail(mailOptions);
+    for (const recipient of recipients) {
+        try {
+            await sendOne(recipient);
+            sent.push(recipient.Email);
+        } catch (error) {
+            console.error(`Failed to email ${recipient?.Email}:`, error.message);
+            failed.push({ email: recipient?.Email ?? "unknown", reason: error.message });
         }
+    }
 
-        return new Response(
-            JSON.stringify({ message: "Emails sent successfully" }),
-            { status: 200 }
-        );
-    } catch (error) {
-        return new Response(
-            JSON.stringify({ error: "Failed to send emails" }),
-            { status: 500 }
+    if (!sent.length) {
+        return Response.json(
+            { message: "No emails could be sent", sent, failed },
+            { status: 502 }
         );
     }
+
+    return Response.json(
+        {
+            message: failed.length
+                ? `Sent ${sent.length}, failed ${failed.length}`
+                : `Sent ${sent.length} email${sent.length === 1 ? "" : "s"}`,
+            sent,
+            failed,
+        },
+        // 207: some recipients succeeded and some did not.
+        { status: failed.length ? 207 : 200 }
+    );
 }

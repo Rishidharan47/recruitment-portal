@@ -1,0 +1,29 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "formData",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "Email", "order": "ASCENDING" },
+        { "fieldPath": "createdAt", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "formData",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "Department", "order": "ASCENDING" },
+        { "fieldPath": "createdAt", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "formData",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "shortlisted", "order": "ASCENDING" },
+        { "fieldPath": "createdAt", "order": "DESCENDING" }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}

@@ -1,9 +1,9 @@
 import React from "react";
 import { redirect } from "next/navigation";
 import NavBar from "@/components/NavBar";
-import { connect, serializeFirestoreData } from "@/lib/db";
 import AdminContent from "@/components/AdminContent";
 import { getAdminSession } from "@/lib/adminAuth";
+import { fetchApplicantsPage, fetchApplicantStats } from "@/lib/adminApplicants";
 
 export const dynamic = "force-dynamic";
 
@@ -33,19 +33,22 @@ export default async function AdminPage() {
     );
   }
 
-  const db = await connect();
-  const snapshot = await db.collection("formData").get();
-  const applicants = snapshot.docs.map((doc) => ({
-    id: doc.id,
-    _id: doc.id,
-    ...serializeFirestoreData(doc.data()),
-  }));
+  // First page only, plus server-side counts. This used to read every
+  // applicant document - with every answer - on every page load.
+  const [{ applicants, nextCursor }, stats] = await Promise.all([
+    fetchApplicantsPage(),
+    fetchApplicantStats(),
+  ]);
 
   return (
     <>
       <NavBar />
       <main id="main-content">
-        <AdminContent applicants={applicants} />
+        <AdminContent
+          applicants={applicants}
+          nextCursor={nextCursor}
+          stats={stats}
+        />
       </main>
     </>
   );

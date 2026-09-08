@@ -30,10 +30,11 @@ import { Input } from "@/components/ui/input";
 import PaginationComp from "./PaginationComp";
 import DialogComp from "./DialogComp";
 import MailComposer from "./MailComposer";
-import { CSVLink } from "react-csv";
+// react-csv is gone: the export now fetches full records (with answers) on
+// demand and builds the file, since the table itself no longer loads them.
 import { CSV_Header } from "@/constants";
 
-const DataTable = ({ data }) => {
+const DataTable = ({ data, initialCursor = null, stats = null }) => {
   // One source of truth for the records, with the two filters derived from it.
   // Previously both filters sliced the original `data` prop while shortlisting
   // wrote to a separate `tableData` state, so a row toggled while a filter was
@@ -41,6 +42,68 @@ const DataTable = ({ data }) => {
   const [records, setRecords] = useState(data);
   const [deptFilter, setDeptFilter] = useState("");
   const [shortlistFilter, setShortlistFilter] = useState("");
+
+  // The server sends the first page; the rest are fetched on demand.
+  const [cursor, setCursor] = useState(initialCursor);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
+
+  const loadMore = async () => {
+    if (!cursor || isLoadingMore) return;
+    setIsLoadingMore(true);
+    try {
+      const res = await fetch(
+        `/api/admin/applicants?cursor=${encodeURIComponent(cursor)}`
+      );
+      if (!res.ok) throw new Error("Failed to load more applicants");
+      const { applicants, nextCursor } = await res.json();
+      setRecords((prev) => [...prev, ...applicants]);
+      setCursor(nextCursor);
+    } catch (error) {
+      console.error(error);
+      toast.error("Could not load more applicants");
+    } finally {
+      setIsLoadingMore(false);
+    }
+  };
+
+  // Answers aren't loaded with the table, so the export fetches the full
+  // records (including Questions) at the moment it's asked for.
+  const handleExport = async () => {
+    setIsExporting(true);
+    try {
+      const res = await fetch("/api/admin/applicants?full=1");
+      if (!res.ok) throw new Error("Export failed");
+      const { applicants } = await res.json();
+
+      const rows = applicants.map((item) => ({
+        ...item,
+        Questions: formatQuestionsForCsv(item),
+      }));
+      const header = CSV_Header.map((h) => h.label).join(",");
+      const body = rows
+        .map((row) =>
+          CSV_Header.map((h) => `"${String(row[h.key] ?? "").replace(/"/g, '""')}"`).join(",")
+        )
+        .join("\n");
+
+      const blob = new Blob([`${header}\n${body}`], {
+        type: "text/csv;charset=utf-8;",
+      });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `applicants-${new Date().toISOString().slice(0, 10)}.csv`;
+      link.click();
+      URL.revokeObjectURL(url);
+      toast.success(`Exported ${rows.length} applicants`);
+    } catch (error) {
+      console.error(error);
+      toast.error("Could not export applicants");
+    } finally {
+      setIsExporting(false);
+    }
+  };
 
   const tableData = useMemo(
     () =>
@@ -221,12 +284,24 @@ const DataTable = ({ data }) => {
         body: JSON.stringify(request),
       });
 
+      const result = await response.json().catch(() => ({}));
+
       if (response.ok) {
-        toast("Invite has been sent!", {
-          description: `On ${months[curMonth - 1]} ${curDate}, ${curYear}`,
-        });
+        // 207 means some recipients failed; say so rather than reporting a
+        // clean success.
+        if (result.failed?.length) {
+          toast.warning(result.message, {
+            description: `Could not reach: ${result.failed
+              .map((f) => f.email)
+              .join(", ")}`,
+          });
+        } else {
+          toast.success(result.message || "Invite has been sent!", {
+            description: `On ${months[curMonth - 1]} ${curDate}, ${curYear}`,
+          });
+        }
       } else {
-        toast("Failed to send invite", {
+        toast.error(result.message || "Failed to send invite", {
           description: "Please try again later.",
         });
       }
@@ -270,14 +345,6 @@ const DataTable = ({ data }) => {
     return String(item.Questions);
   };
 
-  const csv_link = {
-    headers: CSV_Header,
-    data: tableData.map((item) => ({
-      ...item,
-      Questions: formatQuestionsForCsv(item),
-    })),
-  };
-
   const pageSize = state.pageSize;
   const firstRowOnPage = applicantTotalCount === 0 ? 0 : pageIndex * pageSize + 1;
   const lastRowOnPage = Math.min((pageIndex + 1) * pageSize, applicantTotalCount);
@@ -286,19 +353,26 @@ const DataTable = ({ data }) => {
   // "Under review" and "Rejected", but an application has a `shortlisted`
   // boolean and nothing else - inventing statuses in the UI would mean
   // filtering by something that is never stored.
-  const stats = [
-    { label: "Total applicants", value: records.length, className: "text-white" },
-    { label: "Shortlisted", value: shortlistedApplicantCount, className: "text-success" },
+  // Counts come from Firestore's count aggregation on the server, so they
+  // describe every applicant - not just the page that happens to be loaded.
+  const headerStats = [
+    {
+      label: "Total applicants",
+      value: stats?.total ?? records.length,
+      className: "text-white",
+    },
+    {
+      label: "Shortlisted",
+      value: stats?.shortlisted ?? shortlistedApplicantCount,
+      className: "text-success",
+    },
     {
       label: "Not shortlisted",
-      value: records.length - records.filter((r) => r.shortlisted).length,
+      value:
+        stats?.notShortlisted ?? records.filter((r) => !r.shortlisted).length,
       className: "text-zinc-300",
     },
-    {
-      label: "Departments",
-      value: new Set(records.map((r) => r.Department).filter(Boolean)).size,
-      className: "text-brand",
-    },
+    { label: "Loaded", value: records.length, className: "text-brand" },
   ];
 
   return (
@@ -317,7 +391,7 @@ const DataTable = ({ data }) => {
         </div>
 
         <dl className="flex flex-wrap gap-x-10 gap-y-4">
-          {stats.map((stat) => (
+          {headerStats.map((stat) => (
             <div key={stat.label}>
               <dt className="text-xs text-zinc-500">{stat.label}</dt>
               <dd className={`mt-1 text-2xl font-semibold tabular-nums ${stat.className}`}>
@@ -347,11 +421,14 @@ const DataTable = ({ data }) => {
         <FilterShortlisted filterFunc={setShortlistFilter} value={shortlistFilter} />
         <DialogComp selectedApplicants={showRowData} />
 
-        <Button variant="outline" asChild>
-          <CSVLink {...csv_link} className="flex items-center gap-2">
-            <IoCloudDownloadOutline />
-            Export
-          </CSVLink>
+        <Button
+          variant="outline"
+          onClick={handleExport}
+          disabled={isExporting}
+          className="flex gap-2"
+        >
+          <IoCloudDownloadOutline />
+          {isExporting ? "Exporting..." : "Export"}
         </Button>
         <Button variant="outline" onClick={resetFilters} className="flex gap-2">
           <GrPowerReset />
@@ -452,6 +529,16 @@ const DataTable = ({ data }) => {
           </TableBody>
         </Table>
       </div>
+
+      {cursor && (
+        <div className="flex justify-center border-t border-white/5 pt-4">
+          <Button variant="outline" onClick={loadMore} disabled={isLoadingMore}>
+            {isLoadingMore
+              ? "Loading..."
+              : `Load more applicants (${records.length} of ${stats?.total ?? "?"} loaded)`}
+          </Button>
+        </div>
+      )}
 
       <PaginationComp
         pageIndex={pageIndex}
