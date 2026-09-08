@@ -3,6 +3,7 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { SUBMISSION_DEADLINE } from "@/constants";
 import { validateApplication } from "@/lib/validateApplication";
+import { enforceRateLimit } from "@/lib/rateLimit";
 
 export const dynamic = "force-dynamic";
 
@@ -20,6 +21,9 @@ export async function POST(req) {
 
     const user = session.user;
     const userEmail = user.email;
+
+    const limited = await enforceRateLimit(req, "submit", { userId: user.id });
+    if (limited) return limited;
 
     const deadline = new Date(SUBMISSION_DEADLINE);
     if (new Date() > deadline)

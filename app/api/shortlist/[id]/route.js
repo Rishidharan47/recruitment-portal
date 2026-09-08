@@ -1,12 +1,16 @@
 import { NextResponse } from 'next/server';
 import { connect, serializeFirestoreData } from '@/lib/db';
 import { getAdminSession, adminGuardResponse } from '@/lib/adminAuth';
+import { enforceRateLimit } from '@/lib/rateLimit';
 
 export const dynamic = 'force-dynamic';
 
 export async function PATCH(req, { params }) {
-    const { error } = await getAdminSession();
+    const { session, error } = await getAdminSession();
     if (error) return adminGuardResponse(error);
+
+    const limited = await enforceRateLimit(req, 'shortlist', { userId: session.user.id });
+    if (limited) return limited;
 
     const db = await connect();
 

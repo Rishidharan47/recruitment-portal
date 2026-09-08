@@ -2,6 +2,7 @@ require("dotenv").config();
 import nodemailer from "nodemailer";
 import { reviews } from "@/constants";
 import { getAdminSession, adminGuardResponse } from "@/lib/adminAuth";
+import { enforceRateLimit } from "@/lib/rateLimit";
 
 export const dynamic = "force-dynamic";
 
@@ -16,8 +17,11 @@ const transporter = nodemailer.createTransport({
 export async function POST(req) {
     // Without this check anyone on the internet could send arbitrary HTML mail
     // to arbitrary addresses through the organisation's Gmail account.
-    const { error } = await getAdminSession();
+    const { session, error } = await getAdminSession();
     if (error) return adminGuardResponse(error);
+
+    const limited = await enforceRateLimit(req, "email", { userId: session.user.id });
+    if (limited) return limited;
 
     const { recipients, payloadData } = await req.json();
 

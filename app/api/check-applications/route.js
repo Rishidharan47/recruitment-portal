@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { connect } from "@/lib/db";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
+import { enforceRateLimit } from "@/lib/rateLimit";
 
 export const dynamic = "force-dynamic";
 
@@ -19,6 +20,9 @@ export async function GET(req) {
 
     const user = session.user;
     const userEmail = user.email;
+
+    const limited = await enforceRateLimit(req, "read", { userId: user.id });
+    if (limited) return limited;
 
     const { searchParams } = new URL(req.url);
     const email = searchParams.get("email");

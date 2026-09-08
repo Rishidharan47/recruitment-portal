@@ -192,13 +192,46 @@ All three now use a shared `lib/adminAuth.js` guard (`getAdminSession` / `adminG
 built on the same `auth.api.getSession` pattern the other routes already used. Verified: 401
 when signed out, 200 with data for a real admin.
 
-### 2d. Security response headers
+### 2d. Nothing was rate limited
+
+Sign-in and sign-up accepted requests as fast as the network allowed, so passwords could be
+brute-forced against a known address and accounts created in bulk. `/api/submit-form` and
+`/api/send-email` were equally open — the mailer sends through a real mailbox, where a runaway
+loop costs money and burns the sender's reputation.
+
+`lib/rateLimit.js` adds a Firestore-backed fixed-window limiter. The read and the increment run
+in a single transaction, for the same reason the submit route needed one: two concurrent
+requests must not both see the same count and slip past. Signed-in callers are keyed by user id
+(so quota can't be multiplied by rotating IPs), anonymous ones by the first `x-forwarded-for`
+address. Buckets: `auth` 30 per 15 min, `submit` 10/hr, `email` 20/hr, `shortlist` 300/hr,
+`read` 120/hr. Blocked requests get `429` with a `Retry-After` header.
+
+Two deliberate choices:
+
+- **It fails open.** If the counter can't be read or written, the request proceeds and the
+  error is logged. A limiter outage should not take applications offline mid-recruitment.
+- **Only credential-submitting auth paths are limited** (`/sign-in`, `/sign-up`,
+  `/forget-password`, `/reset-password`). Session lookups run on every page load and would
+  otherwise exhaust the bucket during ordinary browsing.
+
+Counters are swept opportunistically (~2% of calls delete windows older than two days), so the
+collection doesn't grow without bound and no cron job is needed.
+
+**A bug this caught, worth recording:** the first version returned the counter value from the
+transaction and compared `count > limit`. At the boundary, "I just incremented to the limit"
+and "I was blocked at the limit" produce the same number, so the check never fired — the
+counter pinned at exactly 30 while requests kept succeeding. The transaction now returns
+whether the request was *allowed*, not the count. Verified after the fix: 30 sign-in attempts
+pass and the 31st onward return `429` with `Retry-After: 109`; on the per-user `submit` bucket,
+exactly 10 attempts pass and the 11th and 12th are blocked.
+
+### 2e. Security response headers
 
 `next.config.mjs` now sets `X-Frame-Options: DENY` (clickjacking), `X-Content-Type-Options:
 nosniff`, `Referrer-Policy: strict-origin-when-cross-origin` and a `Permissions-Policy`
 denying camera/microphone/geolocation.
 
-### 2e. Reduced attack surface
+### 2f. Reduced attack surface
 
 Deleted `app/api/get-submissions` and `app/api/check-department-submission`: both were
 unreferenced by any client code and duplicated `/api/check-applications`. Every extra endpoint
@@ -335,6 +368,16 @@ On top of that:
 ---
 
 ## 6. Build / tooling
+
+`next build` and `next dev` both write to `.next`, so running a production build while the dev
+server is up deletes the chunks it is serving and every page starts 404-ing its CSS and JS —
+the app looks catastrophically broken while nothing is actually wrong with it. `next.config.mjs`
+now honours a `NEXT_DIST_DIR` env var, so a verification build can be run alongside a live dev
+server:
+
+```bash
+NEXT_DIST_DIR=.next-build npx next build
+```
 
 `npm install` failed outright on a clean checkout: `typescript@^7.0.2` in devDependencies
 conflicts with `better-auth-firestore`'s `typescript@^5` peer range (`ERESOLVE`). Pinned to

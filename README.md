@@ -137,6 +137,9 @@ detail — root causes, reasoning and the evidence for each — is in **[WORK.md
 - `/api/admin/applicants`, `/api/shortlist/[id]` and `/api/send-email` had no authentication at
   all — the last one being an open mailer on the club's Gmail account. All three now require an
   admin session.
+- Nothing was rate limited — sign-in could be brute-forced and the mailer hammered. Added a
+  Firestore-backed fixed-window limiter (`lib/rateLimit.js`) over auth, submit, email,
+  shortlist and read paths, keyed by user id when signed in and by IP otherwise.
 - Added `X-Frame-Options`, `nosniff`, `Referrer-Policy` and `Permissions-Policy` headers.
 
 ### Performance
