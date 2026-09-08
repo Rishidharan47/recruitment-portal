@@ -85,85 +85,85 @@ export const reviews = [
       id: "c21ca066-ab4d-40a3-943c-f170d6312bdc",
       icon: ManageAccounts,
       tone: "#8ab4f8",
-      name: "§_Mn9X7_qz",
-      description: "bp05Lb(bTI, CZWSr₹#^Z *7J ^T( f391xQ 1kp #q₹X 3z!Kux 6j(IkL.",
+      name: "Human Resources",
+      description: "Build a positive community through people, culture and team support.",
     },
     {
       id: "4499a966-2740-4c36-88dd-8916a909fc77",
       icon: Campaign,
       tone: "#FF7A6B",
-      name: "¥_Pb!8Q_wk",
-      description: "oif 37ByD JahIXh — 79UzG, 31M^I & 7aF^1pkf0.",
+      name: "Content & Media",
+      description: "Tell our story through content, visuals, video and social media.",
     },
     {
       id: "3936d5a2-acd9-4a98-ac97-42c2c92f5c02",
       icon: ConnectWithoutContact,
       tone: "#FFD45E",
-      name: "∆_Ot₹3W_vx",
-      description: "qi8qMnWmzP5h, 1kL1d3er & nUKpZg %AU0₹g!ir3C.",
+      name: "Events & Outreach",
+      description: "Plan events, workshops and collaborations with the community.",
     },
     {
       id: "e2ed9c2c-c36c-457f-a8bb-cf2e8bc7c2e1",
       icon: DesignServices,
       tone: "#FF7A6B",
-      name: "ø_UxK2_mj",
-      description: "2dIf2%n5, ##*qF83I₹k & 6kz71p8pcA K7₹#87 ekeG.",
+      name: "Product Management",
+      description: "Bridge ideas and execution to ship impactful products.",
     },
     {
       id: "d3beefc1-f8b0-4202-b26c-36e9804b6636",
       icon: Palette,
       tone: "#FFD45E",
-      name: "π_Ds9J8_tr",
-      description: "^48qNZaJ, 0i0j!n2 & x3% c$q*Bh $1J$^Ycn Qq AV( Z4lvA3p0co*(.",
+      name: "Design",
+      description: "Create intuitive experiences through UI/UX, graphics and brand design.",
     },
     {
       id: "8143de1d-db17-42fa-958d-13b10804f894",
       icon: Language,
       tone: "#8AB4F8",
-      name: "µ_Wb₹5D_lp",
-      description: "!r9wz1 899%₹Gk3a, ZUVx-8vQUG %8m8 & VNz a!Lu CG5.",
+      name: "Software Development",
+      description: "Build products, solve real problems and work on web, mobile and backend.",
     },
     {
       id: "339f0f8a-72f2-44b9-92ab-2b0d4dcfa0f6",
       icon: Mobile2,
       tone: "#6EE7A0",
-      name: "∑_ApZ3V_gh",
-      description: "V1₹(oj( & Ne4my-p@3gozJ0 ZHM* UBJk EW9Hp1 & p₹f(jev.",
+      name: "Technical Writing",
+      description: "Simplify complex ideas through clear and engaging documentation.",
     },
     {
       id: "9055864f-c7dc-44cd-91d5-8759d32a496a",
       icon: SportsEsports,
       tone: "#FF7A6B",
-      name: "Ω_GmF6X_ny",
-      description: "A%XSkat2 1VZor bQz1 iI#Q%, *9nvy & %1V 81P.",
+      name: "Gaming & Esports",
+      description: "Organise tournaments, manage teams and grow the campus gaming scene.",
     },
     {
       id: "c0f3b1d1-ce05-45f6-9e34-ac9443fc5fcb",
       icon: Analytics,
       tone: "#8AB4F8",
-      name: "≈_DtB1S_zk",
-      description: "@m, N$hnqk9hk & g7#TkO 8MYYq x₹ %gx1j UPqD.",
+      name: "Data Science",
+      description: "Turn data into insights through analytics, ML and AI.",
     },
     {
       id: "a1d920df-9eb9-49eb-b3a4-e4a3d1245ede",
       icon: Cloud,
       tone: "#FFD45E",
-      name: "∂_CdH4D_bv",
-      description: "Uu1rp Kyxlwv9Hf%WxFb, (pkJBJ*9!qS!rWs1, (t/q3 J$W38C3x1 & eR$8(%YXCt.",
+      name: "Hardware & IoT",
+      description: "Work with electronics, embedded systems and real-world prototypes.",
     },
     {
       id: "6a89c4e2-7b19-4f32-821e-9821a41b5201",
       icon: Hub,
       tone: "#FF7A6B",
-      name: "∫_BkY2C_xu",
-      description: "B3V!qkq@Ss8Se 7k70P9e, 80sDS rFM%M1kbR & K7P7 lBFE₹0vF#J1₹.",
+      name: "Research & Development",
+      description: "Explore emerging technologies and work on experimental projects.",
     },
     {
       id: "3e9ac635-01d4-495e-aa87-a7335a2403c2",
       icon: Trophy,
       tone: "#6EE7A0",
-      name: "≤_CpM8P_rw",
-      description: "#0Q, DmNOdq8S & bMTq%0hj T9Ep j6V3% z@8LFCwq7!.",
+      name: "Cybersecurity",
+      description: "Build, break and secure systems through hands-on security work.",
     },
 ];
 
@@ -178,7 +178,7 @@ export const isValidDepartment = (name) =>
 // Questionnaire Data
 export const QuestionnaireData = [
   {
-    department: "∑_ApZ3V_gh",
+    department: "Technical Writing",
     questions: [
       {
         name: "poAx ZQPF iL0C *$ Peq# 2qu43N8V0TC8 c3^ pKl1ypL *D@DRew tB Dm2 pwS#kXdV5XM?",
@@ -208,7 +208,7 @@ export const QuestionnaireData = [
     ],
   },
   {
-    department: "∫_BkY2C_xu",
+    department: "Research & Development",
     questions: [
       {
         name: "$nX EV T!Q y7I^ 3P qmro tTx ^7rkyz9j8f *VmrS0L3H(, %x$ qk7E ms 3fo Ucl1 3z l9sa0 vq 42r0*T₹Km#?",
@@ -233,7 +233,7 @@ export const QuestionnaireData = [
     ],
   },
   {
-    department: "∂_CdH4D_bv",
+    department: "Hardware & IoT",
     questions: [
       {
         name: "PRTFk( 98*XJKq xW*",
@@ -258,7 +258,7 @@ export const QuestionnaireData = [
     ],
   },
   {
-    department: "≤_CpM8P_rw",
+    department: "Cybersecurity",
     questions: [
       {
         name: "kWgKYq4y Kc##₹d6 ^8xR",
@@ -293,7 +293,7 @@ export const QuestionnaireData = [
     ],
   },
   {
-    department: "≈_DtB1S_zk",
+    department: "Data Science",
     questions: [
       {
         name: "9JS7 0U qm#!g c1hCLiad.",
@@ -333,7 +333,7 @@ export const QuestionnaireData = [
     ],
   },
   {
-    department: "π_Ds9J8_tr",
+    department: "Design",
     questions: [
       {
         name: "8!g( m(8 qgK DBkJvIC5₹A Bu Ky7xCa?",
@@ -368,7 +368,7 @@ export const QuestionnaireData = [
     ],
   },
   {
-    department: "Ω_GmF6X_ny",
+    department: "Gaming & Esports",
     questions: [
       {
         name: "xx xk^ izYq Y*A (EvkBvp1TF *0l# 0My 3$5Z $CyC₹87? 61 Nz, 2^9qw 8pL?",
@@ -408,7 +408,7 @@ export const QuestionnaireData = [
     ],
   },
   {
-    department: "§_Mn9X7_qz",
+    department: "Human Resources",
     questions: [
       {
         name: "E98 W0 nm^$ 8k7Xp ekH, !kI06TSC g^B(WhH^ Jf0Dt1J.",
@@ -438,7 +438,7 @@ export const QuestionnaireData = [
     ],
   },
   {
-    department: "∆_Ot₹3W_vx",
+    department: "Events & Outreach",
     questions: [
       {
         name: "R#w 1S h7@ @Rw8 ox c!#9 F!KMeV92?",
@@ -468,7 +468,7 @@ export const QuestionnaireData = [
     ],
   },
   {
-    department: "¥_Pb!8Q_wk",
+    department: "Content & Media",
     questions: [
       {
         name: "g@H Wxv v4₹ 8zd30#4b38 0* QGm ₹^ZRMVfx2 gsTzYGxtJD?",
@@ -488,7 +488,7 @@ export const QuestionnaireData = [
     ],
   },
   {
-    department: "ø_UxK2_mj",
+    department: "Product Management",
     questions: [
       {
         name: "kJ0k #q 4EqzQ #r^pAlwG.",
@@ -543,7 +543,7 @@ export const QuestionnaireData = [
     ],
   },
   {
-    department: "µ_Wb₹5D_lp",
+    department: "Software Development",
     questions: [
       {
         name: "P9Q zH₹ L#@k0RW( 7 yAdh 1x 1 7*Omxs7Hm @Q3 5%37 9PmKG N21O eitxq( (s.q., w7ep.7t, d5x, qc93qv). Qd1 KSZ 1M 7qi3xPE (3!3R JyS%h55 m31o WYc ape* 3(iEQ9 nV5otX3Hu G^ TF!1o q^Y(P8xr #1 #3C!Qdc. w659 L@ %YVZ#72 IKXk D7@9( %8-kN9YXh ₹2*@9O nLrJ 1q rx733 zLq dqb2I M0*1 ₹1A%j ^%xsks 6gZzT!L$ P1o KU UzMHuk (^₹h C4fG^M%.",
