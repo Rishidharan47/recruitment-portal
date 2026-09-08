@@ -529,6 +529,15 @@ boundary), and its two department links pointed at ids that are not in the catal
 - **A visible focus ring** for keyboard users is defined globally in `globals.css`.
 - `app/layout.js` imported the `Inter` font and never applied it, and imported a
   `ThemeProvider` it never used. Font applied, dead import removed.
+- **The department catalogue's names and descriptions were placeholder tokens** (e.g.
+  `"§_Mn9X7_qz"`, `"bp05Lb(bTI, CZWSr₹#^Z..."`) rather than real text — every visible
+  department name and description across the landing page, picker and application form was
+  unreadable gibberish. Replaced with the club's real 12 department names and descriptions
+  (matched against a reference design of the site), keeping every id, icon, accent colour and
+  `QuestionnaireData` mapping unchanged — the rename was applied everywhere the old token
+  occurred, so the per-department question sets still route correctly. The individual
+  application *questions* within each department are still placeholder text: no real source
+  for those exists in this codebase, so they were deliberately left rather than invented.
 
 ---
 
@@ -591,3 +600,12 @@ What was checked, and how:
 4. **Admin panel** — shortlisting persists through the API and updates the counter, the
    department filter narrows the table, and "Reset Filters" restores it without a page reload.
 5. **`npx next build`** passes cleanly.
+
+### Live deployment
+
+The app is also deployed at **https://recruitment-portal-demo.vercel.app**, against a Firestore
+project created specifically for this deployment (not the production club project referenced
+in `.firebaserc` — no real recruitment data is anywhere near this). `POST /api/auth/sign-up/email`
+against the live URL returned `200` with a real user document, confirming the Firebase Admin
+SDK credentials, `firestore.rules`, and `BETTER_AUTH_URL` are all correctly configured in
+production, not just against the local emulator.

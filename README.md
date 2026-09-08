@@ -1,11 +1,19 @@
 # Recruitment Portal
 
+**Live demo: [recruitment-portal-demo.vercel.app](https://recruitment-portal-demo.vercel.app)**
+(deployed against a Firestore project created specifically for this demo — safe to sign up and
+submit a test application; nothing here touches real recruitment data)
+
 A recruitment portal for a student technical club. Applicants sign in, browse departments,
 apply to up to two of them with a department-specific questionnaire, and the core team reviews,
 filters, shortlists and emails them from an admin panel.
 
 Built with **Next.js 14** (App Router), **Cloud Firestore**, **better-auth**, **Tailwind CSS**
 and **shadcn/ui**.
+
+See **[WORK.md](WORK.md)** for the full list of bugs found and fixed, with root cause,
+fix, and verification evidence for each — that's the document to read for the reasoning behind
+every change in this repo.
 
 ---
 
