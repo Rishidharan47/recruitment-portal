@@ -420,6 +420,16 @@ On top of that:
   "n / 2 selected" counter.
 - **The nav bar and footer** were unstyled with an `<hr>`; both are now proper layout with a
   sticky, blurred header.
+- **A cursor-reactive ambient glow in the hero**, at the user's request, using the same
+  technique as the Ergent dashboard's ambient background: raw pointer position lives in a ref
+  (never React state), eased toward every animation frame with a 0.08 lerp, and written
+  directly to CSS custom properties the gradient reads — so the glow tracks smoothly without
+  a single re-render. `components/CursorGlow.jsx` is a reusable wrapper; skips all of it under
+  `prefers-reduced-motion: reduce`, leaving just the static wash. Verified the position pipeline
+  end to end (CSS var in, computed `background-image` position out); the automated browser
+  session's tab reports `visibilityState: "hidden"`, which pauses `requestAnimationFrame`
+  browser-wide and made the glow look frozen in headless testing — worth checking in your own
+  foregrounded browser, where rAF runs normally.
 - **The landing page was three unstyled headings and a button.** `Hero.jsx` is rebuilt with a
   real type scale, an open/closed status pill, the countdown, a primary call to action and a
   small stats strip. Its own busy work went with it: a nested loop running 50,000 iterations on

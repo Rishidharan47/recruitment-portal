@@ -6,6 +6,7 @@ import { ArrowRight, Users, FileText, Star } from "lucide-react";
 import { Space_Grotesk } from "next/font/google";
 import { Button } from "./ui/button";
 import CountdownTimer from "./common/CountdownTimer";
+import { CursorGlow } from "./CursorGlow";
 import { SUBMISSION_DEADLINE, reviews } from "@/constants";
 
 const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], weight: ["500", "600", "700"] });
@@ -22,17 +23,19 @@ export default function Hero() {
   return (
     <section className="relative overflow-hidden border-b border-white/5">
       {/* No stock photography to fall back on, so the accent palette from the
-          department catalogue carries the visual weight instead. */}
+          department catalogue carries the visual weight instead: a static
+          wash for depth, plus a soft glow that eases toward the cursor
+          (CursorGlow) the same way Ergent's ambient background does. */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 -top-32 h-96 opacity-[0.18] blur-3xl"
+        className="pointer-events-none absolute inset-x-0 -top-32 h-96 opacity-[0.12] blur-3xl"
         style={{
           background:
             "radial-gradient(35% 55% at 15% 50%, #8AB4F8 0%, transparent 100%), radial-gradient(35% 55% at 55% 35%, #6EE7A0 0%, transparent 100%), radial-gradient(30% 50% at 85% 55%, #FFD45E 0%, transparent 100%)",
         }}
       />
 
-      <div className="relative mx-auto max-w-6xl px-4 pb-14 pt-16 sm:px-6 sm:pb-20 sm:pt-24">
+      <CursorGlow className="mx-auto max-w-6xl px-4 pb-14 pt-16 sm:px-6 sm:pb-20 sm:pt-24">
         <span
           className={`inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-sm ${
             deadlinePassed
@@ -95,7 +98,7 @@ export default function Hero() {
             </div>
           ))}
         </dl>
-      </div>
+      </CursorGlow>
     </section>
   );
 }
