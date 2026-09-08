@@ -1,0 +1,17 @@
+rules_version = '2';
+
+// This app never reads or writes Firestore from the browser: every access goes
+// through a Next.js route handler using the Firebase Admin SDK, which bypasses
+// these rules. So client access is denied outright.
+//
+// The previous `allow read, write: if true` left every applicant's name, email,
+// phone number, registration number and answers readable - and deletable - by
+// anyone holding the public NEXT_PUBLIC_FIREBASE_* web config, which is shipped
+// to every visitor's browser by design.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
