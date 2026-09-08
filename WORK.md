@@ -87,7 +87,22 @@ AFTER  (check + write in one transaction):
   rows now stored  : 1  (should be 1)
 ```
 
-### 1c. Two smaller storage-shape fixes in the same route
+### 1c. The route stored whatever department string it was handed
+
+`Department` was never checked against the real catalogue — it was destructured straight out of
+the request body and written to Firestore. A crafted request (the form is not the only way to
+reach the endpoint) could create applications for departments that do not exist, and those rows
+then appear in the admin table, populate the department filter, and land in the CSV export as
+genuine applications. `Questions` was equally untrusted: an array or a string would be stored
+as-is and break the admin table's rendering and the CSV flattening, which both assume an
+object.
+
+The route now rejects a `Department` that is not in `DEPARTMENT_NAMES` (derived from the same
+`reviews` catalogue the UI renders, so the two cannot drift), and rejects a `Questions` value
+that is not a plain object. Verified: bogus department → `400`, `Questions` as an array →
+`400`, valid submission → `200`, and nothing from the rejected requests reached the database.
+
+### 1d. Two smaller storage-shape fixes in the same route
 
 - **`shortlisted` was never initialised.** New documents had no `shortlisted` field at all,
   so the admin "Shortlisted: No" filter (`String(row.shortlisted) === "false"`) matched

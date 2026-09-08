@@ -151,6 +151,14 @@ export const reviews = [
     },
 ];
 
+// The set of departments an application may be submitted for. Derived from the
+// catalogue above so the two can never drift apart, and used by the server to
+// reject applications for departments that do not exist.
+export const DEPARTMENT_NAMES = reviews.map((department) => department.name);
+
+export const isValidDepartment = (name) =>
+  typeof name === "string" && DEPARTMENT_NAMES.includes(name);
+
 // Questionnaire Data
 export const QuestionnaireData = [
   {

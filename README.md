@@ -119,6 +119,10 @@ detail — root causes, reasoning and the evidence for each — is in **[WORK.md
   a single Firestore transaction.
 - **`shortlisted` and `Pref` were never written**, so the "not shortlisted" filter matched
   nothing and the Preference column was always blank.
+- **The department was never validated.** Any string in the request body was stored, so a
+  crafted request could create applications for departments that do not exist and have them
+  show up in the admin table, the filters and the CSV export. `Department` is now checked
+  against the catalogue and `Questions` must be a plain object.
 
 ### Security
 

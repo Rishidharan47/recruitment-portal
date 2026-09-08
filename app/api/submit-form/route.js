@@ -1,7 +1,7 @@
 import { connect } from "@/lib/db";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
-import { SUBMISSION_DEADLINE } from "@/constants";
+import { SUBMISSION_DEADLINE, isValidDepartment } from "@/constants";
 
 export const dynamic = "force-dynamic";
 
@@ -34,6 +34,30 @@ export async function POST(req) {
     const data = await req.json();
 
     const { Department, Questions, ...formFields } = data;
+
+    // The department has to be one that actually exists. Without this the
+    // route stored whatever string it was handed, so a crafted request could
+    // create applications for departments nobody runs - which then show up in
+    // the admin table, the department filter and the CSV export as real rows.
+    if (!isValidDepartment(Department)) {
+      return new Response(
+        JSON.stringify({ message: "That department does not exist." }),
+        { status: 400 }
+      );
+    }
+
+    // Questions must be a plain object of answers; an array or a primitive
+    // would be stored as-is and break the admin table and CSV formatting.
+    if (
+      Questions === null ||
+      typeof Questions !== "object" ||
+      Array.isArray(Questions)
+    ) {
+      return new Response(
+        JSON.stringify({ message: "Malformed application answers." }),
+        { status: 400 }
+      );
+    }
 
     const regNoRegex = /^\d{2}[A-Z]{3}\d{4}$/;
     if (formFields.RegistrationNumber && !regNoRegex.test(formFields.RegistrationNumber)) {
