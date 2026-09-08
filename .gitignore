@@ -39,3 +39,6 @@ next-env.d.ts
 
 # alternate build output (see next.config.mjs)
 /.next-build/
+
+# design reference images (local only)
+/design-references/

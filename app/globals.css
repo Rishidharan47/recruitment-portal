@@ -40,6 +40,14 @@
     --ring: 240 5% 84%;
 
     --radius: 0.5rem;
+
+    /* Interactive accent: links, active states, the primary form action. */
+    --brand: 217 91% 65%;
+    --brand-foreground: 0 0% 100%;
+
+    /* Status colours for the admin table pills. */
+    --success: 152 58% 52%;
+    --neutral-pill: 240 5% 65%;
   }
 
   * {
