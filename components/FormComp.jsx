@@ -18,7 +18,9 @@ import {
   GENERIC_MOTIVATION_QUESTION,
   GENDER_OPTIONS,
   YEAR_OPTIONS,
+  FIELD_LIMITS,
 } from "@/constants";
+import { Info } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
@@ -28,6 +30,18 @@ const normaliseQuestion = (question) =>
   typeof question === "string"
     ? { name: question, type: "generic", placeholder: "2-3 sentences" }
     : question;
+
+// Reference C shows a numbered step rail beside the form. This form is a
+// single page, so the rail is a section navigator that reflects where you
+// actually are, rather than steps that don't exist.
+const sectionId = (name) =>
+  `section-${name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}`;
+
+const CharacterCount = ({ value = "" }) => (
+  <p className="mt-1 text-right text-xs tabular-nums text-zinc-500">
+    {value.length}/{FIELD_LIMITS.answer}
+  </p>
+);
 
 const selectClasses =
   "flex h-10 w-full rounded-md border border-white/15 bg-white/5 px-3 py-2 text-sm text-white outline-none focus:border-white/40 disabled:cursor-not-allowed disabled:opacity-50";
@@ -212,6 +226,42 @@ const FormComp = ({ dept1, dept2 }) => {
 
   const watchedValues = useWatch({ control: form.control });
 
+  const sections = useMemo(
+    () => [
+      { id: sectionId("about"), label: "About you", hint: "Tell us about yourself" },
+      ...departmentNames
+        .filter((department) => questionsForDepartment(department).length)
+        .map((department) => ({
+          id: sectionId(department),
+          label: department,
+          hint: "Answer a few questions",
+        })),
+    ],
+    [departmentNames, questionsForDepartment]
+  );
+
+  const [activeSection, setActiveSection] = useState(sections[0]?.id);
+
+  useEffect(() => {
+    const elements = sections
+      .map((section) => document.getElementById(section.id))
+      .filter(Boolean);
+    if (!elements.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
+        if (visible) setActiveSection(visible.target.id);
+      },
+      { rootMargin: "-20% 0px -70% 0px" }
+    );
+
+    elements.forEach((element) => observer.observe(element));
+    return () => observer.disconnect();
+  }, [sections, isDraftReady]);
+
   useEffect(() => {
     if (!isDraftReady || !draftKey) return;
     localStorage.setItem(
@@ -356,7 +406,7 @@ const FormComp = ({ dept1, dept2 }) => {
   };
 
   return (
-    <main className="mx-auto w-full max-w-3xl px-4 py-10 sm:px-6">
+    <main className="mx-auto w-full max-w-6xl px-4 pb-28 pt-10 sm:px-6">
       {errorMessage && !isSubmitting && (
         <div className="mb-6 rounded-lg border border-red-500/30 bg-red-500/10 p-4">
           <p className="text-sm text-red-300">{errorMessage}</p>
@@ -370,25 +420,89 @@ const FormComp = ({ dept1, dept2 }) => {
         </div>
       )}
 
-      <header className="mb-8">
-        <h1 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-          Application Form
-        </h1>
-        <p className="mt-2 text-sm text-gray-400">
-          Applying to{" "}
-          <span className="font-medium text-white">
-            {departmentNames.join(" and ")}
-          </span>
-          . Your answers are saved in this browser as you type.
-        </p>
-      </header>
+      <div className="grid gap-10 lg:grid-cols-[220px_minmax(0,1fr)]">
+        <aside className="hidden lg:block">
+          <nav className="sticky top-24" aria-label="Form sections">
+            <p className="mb-4 text-[11px] uppercase tracking-widest text-zinc-500">
+              Application
+            </p>
+            <ol className="space-y-1">
+              {sections.map((section, index) => {
+                const isActive = activeSection === section.id;
+                return (
+                  <li key={section.id}>
+                    <a
+                      href={`#${section.id}`}
+                      className={`flex items-start gap-3 rounded-lg px-3 py-2 transition-colors ${
+                        isActive ? "bg-white/5" : "hover:bg-white/[0.03]"
+                      }`}
+                      aria-current={isActive ? "step" : undefined}
+                    >
+                      <span
+                        className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[11px] ${
+                          isActive
+                            ? "bg-brand text-brand-foreground"
+                            : "border border-white/20 text-zinc-400"
+                        }`}
+                      >
+                        {index + 1}
+                      </span>
+                      <span className="min-w-0">
+                        <span
+                          className={`block truncate text-sm ${
+                            isActive ? "text-white" : "text-zinc-400"
+                          }`}
+                        >
+                          {section.label}
+                        </span>
+                        <span className="block text-xs text-zinc-500">
+                          {section.hint}
+                        </span>
+                      </span>
+                    </a>
+                  </li>
+                );
+              })}
+            </ol>
 
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
-          <section className="rounded-xl border border-white/10 bg-white/[0.03] p-5 sm:p-6">
-            <h2 className="mb-5 text-lg font-medium text-white">About you</h2>
+            <div className="mt-6 flex items-start gap-2.5 rounded-xl border border-white/10 bg-white/[0.03] p-4">
+              <Info className="mt-0.5 h-4 w-4 shrink-0 text-brand" aria-hidden="true" />
+              <p className="text-xs leading-relaxed text-zinc-400">
+                You can apply to at most two departments. Your answers are saved
+                in this browser as you type.
+              </p>
+            </div>
+          </nav>
+        </aside>
 
-            <div className="grid gap-5 sm:grid-cols-2">
+        <div>
+          <header className="mb-8">
+            <h1 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+              Application Form
+            </h1>
+            <p className="mt-2 text-sm text-zinc-400">
+              Share a bit about yourself and tell us why you&apos;d be a great fit.
+            </p>
+          </header>
+
+          <Form {...form}>
+            {/* The submit button lives in the sticky bar outside this element,
+                so it is associated back to the form by id. */}
+            <form
+              id="application-form"
+              onSubmit={form.handleSubmit(handleSubmit)}
+              className="space-y-6"
+            >
+              <section
+                id={sectionId("about")}
+                className="scroll-mt-24 rounded-xl border border-white/10 bg-white/[0.02] p-5 sm:p-6"
+              >
+                <h2 className="text-lg font-medium text-white">About you</h2>
+                <p className="mb-5 mt-1 text-sm text-zinc-500">
+                  Basic information to help us get to know you.
+                </p>
+
+                <div className="grid gap-5 sm:grid-cols-2">
               <FormField
                 control={form.control}
                 name="Name"
@@ -505,47 +619,71 @@ const FormComp = ({ dept1, dept2 }) => {
               />
             </div>
 
-            <div className="mt-5">
-              <FormField
-                control={form.control}
-                name={GENERIC_MOTIVATION_QUESTION}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{GENERIC_MOTIVATION_QUESTION}</FormLabel>
-                    <FormControl>
-                      <Textarea {...field} rows={4} placeholder="2-3 sentences" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-          </section>
+                <div className="mt-5">
+                  <FormField
+                    control={form.control}
+                    name={GENERIC_MOTIVATION_QUESTION}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>{GENERIC_MOTIVATION_QUESTION}</FormLabel>
+                        <FormControl>
+                          <Textarea {...field} rows={4} placeholder="2-3 sentences" />
+                        </FormControl>
+                        <CharacterCount value={field.value} />
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </section>
 
-          {departmentNames.map((department) => (
-            <DepartmentQuestions
-              key={department}
-              department={department}
-              questions={questionsForDepartment(department)}
-              form={form}
-            />
-          ))}
+              {departmentNames.map((department) => (
+                <DepartmentQuestions
+                  key={department}
+                  department={department}
+                  questions={questionsForDepartment(department)}
+                  form={form}
+                />
+              ))}
+            </form>
+          </Form>
+        </div>
+      </div>
 
-          <div className="flex flex-col-reverse items-center gap-3 sm:flex-row sm:justify-end">
+      {/* Sticky action bar: on a form this long the submit button would
+          otherwise sit a full screen or two below the last answer. */}
+      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-[#0d0d11]/95 backdrop-blur">
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-3 px-4 py-3 sm:px-6">
+          <p className="hidden text-sm text-zinc-400 sm:block">
+            Applying to{" "}
+            <span className="font-medium text-white">
+              {departmentNames.join(" and ")}
+            </span>
+            <span className="block text-xs text-zinc-500">
+              Answers are saved in this browser as you type.
+            </span>
+          </p>
+
+          <div className="ml-auto flex w-full items-center gap-3 sm:w-auto">
             <Button
               type="button"
-              variant="ghost"
-              className="w-full sm:w-auto"
+              variant="outline"
+              className="flex-1 sm:flex-none"
               onClick={() => router.push("/departments")}
             >
               Cancel
             </Button>
-            <Button type="submit" disabled={isSubmitting} className="w-full sm:w-auto">
+            <Button
+              type="submit"
+              form="application-form"
+              disabled={isSubmitting}
+              className="flex-1 bg-brand text-brand-foreground hover:bg-brand/90 sm:flex-none"
+            >
               {isSubmitting ? "Submitting..." : "Submit application"}
             </Button>
           </div>
-        </form>
-      </Form>
+        </div>
+      </div>
     </main>
   );
 };
@@ -560,18 +698,34 @@ const DepartmentQuestions = ({ department, questions, form }) => {
   if (!departmentQuestions.length) return null;
 
   return (
-    <section className="rounded-xl border border-white/10 bg-white/[0.03] p-5 sm:p-6">
-      <h2 className="mb-5 text-lg font-medium text-white">{department} questions</h2>
+    <section
+      id={sectionId(department)}
+      className="scroll-mt-24 rounded-xl border border-white/10 bg-white/[0.02] p-5 sm:p-6"
+    >
+      <div className="mb-5 flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <h2 className="text-lg font-medium text-white">Department questions</h2>
+          <p className="mt-1 text-sm text-zinc-500">
+            Answer the following questions for this department.
+          </p>
+        </div>
+        <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-zinc-300">
+          {department}
+        </span>
+      </div>
 
-      <div className="space-y-5">
-        {departmentQuestions.map((question) => (
+      <div className="space-y-6">
+        {departmentQuestions.map((question, index) => (
           <FormField
             key={question.name}
             control={form.control}
             name={question.name}
             render={({ field }) => (
               <FormItem>
-                <FormLabel>{question.name}</FormLabel>
+                <FormLabel className="flex gap-2 leading-relaxed">
+                  <span className="text-zinc-500">{index + 1}.</span>
+                  <span>{question.name}</span>
+                </FormLabel>
                 <FormControl>
                   {question.type === "short-text" ? (
                     <Input {...field} placeholder={question.placeholder || "Answer..."} />
@@ -579,10 +733,13 @@ const DepartmentQuestions = ({ department, questions, form }) => {
                     <Textarea
                       {...field}
                       rows={4}
-                      placeholder={question.placeholder || "2-3 sentences"}
+                      placeholder={question.placeholder || "Write your answer here..."}
                     />
                   )}
                 </FormControl>
+                {question.type !== "short-text" && (
+                  <CharacterCount value={field.value} />
+                )}
                 <FormMessage />
               </FormItem>
             )}

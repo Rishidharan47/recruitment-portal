@@ -17,6 +17,7 @@ import { CheckBoxComp } from "./CheckBoxComp";
 import { toast } from "sonner";
 import { curDate, curDay, curMonth, curYear, months, days } from "@/constants";
 import { IoCloudDownloadOutline } from "react-icons/io5";
+import { Search } from "lucide-react";
 import {
   useTable,
   useSortBy,
@@ -98,7 +99,7 @@ const DataTable = ({ data }) => {
         accessor: "Name",
       },
       {
-        Header: "RegistrationNumber",
+        Header: "Registration Number",
         accessor: "RegistrationNumber",
       },
       {
@@ -120,20 +121,23 @@ const DataTable = ({ data }) => {
       {
         Header: "Shortlisted",
         accessor: "shortlisted",
-        Cell: ({ row }) => (
-          <button
-            onClick={() =>
-              handleShortlist(row.original._id, row.original.shortlisted)
-            }
-            className={`px-4 py-2 rounded w-[115px] ${
-              row.original.shortlisted
-                ? "bg-red-600 text-white"
-                : "bg-green-600 text-white"
-            }`}
-          >
-            {row.original.shortlisted ? "Unshortlist" : "Shortlist"}
-          </button>
-        ),
+        Cell: ({ row }) => {
+          const isShortlisted = Boolean(row.original.shortlisted);
+          return (
+            <button
+              type="button"
+              onClick={() => handleShortlist(row.original._id, isShortlisted)}
+              title={isShortlisted ? "Click to un-shortlist" : "Click to shortlist"}
+              className={`w-[130px] rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${
+                isShortlisted
+                  ? "border-success/40 bg-success/15 text-success hover:bg-success/25"
+                  : "border-white/15 text-zinc-400 hover:border-white/30 hover:text-white"
+              }`}
+            >
+              {isShortlisted ? "Shortlisted" : "Not shortlisted"}
+            </button>
+          );
+        },
       },
     ],
     [tableData]
@@ -268,44 +272,95 @@ const DataTable = ({ data }) => {
     })),
   };
 
+  const pageSize = state.pageSize;
+  const firstRowOnPage = applicantTotalCount === 0 ? 0 : pageIndex * pageSize + 1;
+  const lastRowOnPage = Math.min((pageIndex + 1) * pageSize, applicantTotalCount);
+
+  // Only counts that exist in the data. The reference design also showed
+  // "Under review" and "Rejected", but an application has a `shortlisted`
+  // boolean and nothing else - inventing statuses in the UI would mean
+  // filtering by something that is never stored.
+  const stats = [
+    { label: "Total applicants", value: records.length, className: "text-white" },
+    { label: "Shortlisted", value: shortlistedApplicantCount, className: "text-success" },
+    {
+      label: "Not shortlisted",
+      value: records.length - records.filter((r) => r.shortlisted).length,
+      className: "text-zinc-300",
+    },
+    {
+      label: "Departments",
+      value: new Set(records.map((r) => r.Department).filter(Boolean)).size,
+      className: "text-brand",
+    },
+  ];
+
   return (
-    <div className="bg-[#121212] flex flex-col gap-3 p-3 mt-5">
-      <div className="flex items-start border-none justify-start gap-3 p-1 overflow-x-scroll">
-        <Input
-          value={globalFilter || ""}
-          onChange={(e) => setGlobalFilter(e.target.value)}
-          placeholder="Filter Data"
-          className="min-w-[300px]"
-        />
-        <Input
-          className="w-fit"
-          onChange={(e) => handlePageSize(e)}
-          placeholder={"Page Size"}
-        />
+    <div className="mx-auto w-full max-w-7xl px-4 py-10 sm:px-6">
+      <header className="mb-8 flex flex-wrap items-end justify-between gap-6">
+        <div>
+          <p className="text-[11px] uppercase tracking-widest text-zinc-500">
+            Recruitment {new Date().getFullYear()}
+          </p>
+          <h1 className="mt-2 text-4xl font-semibold tracking-tight text-white">
+            Applicants
+          </h1>
+          <p className="mt-2 text-sm text-zinc-400">
+            View, filter and manage all recruitment applications.
+          </p>
+        </div>
+
+        <dl className="flex flex-wrap gap-x-10 gap-y-4">
+          {stats.map((stat) => (
+            <div key={stat.label}>
+              <dt className="text-xs text-zinc-500">{stat.label}</dt>
+              <dd className={`mt-1 text-2xl font-semibold tabular-nums ${stat.className}`}>
+                {stat.value}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </header>
+
+      <div className="mb-4 flex flex-wrap items-center gap-3">
+        <div className="relative min-w-[240px] flex-1 sm:max-w-sm">
+          <Search
+            className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-500"
+            aria-hidden="true"
+          />
+          <Input
+            value={globalFilter || ""}
+            onChange={(e) => setGlobalFilter(e.target.value)}
+            placeholder="Search by name, reg no or email..."
+            aria-label="Search applicants"
+            className="pl-9"
+          />
+        </div>
+
         <FilterDepartment filterFunc={setDeptFilter} value={deptFilter} />
         <FilterShortlisted filterFunc={setShortlistFilter} value={shortlistFilter} />
         <DialogComp selectedApplicants={showRowData} />
-        <Button onClick={resetFilters} className="flex gap-2">
-          <GrPowerReset />
-          Reset Filters
-        </Button>
-        <Button>
-          <CSVLink
-            {...csv_link}
-            className="flex gap-2 justify-center items-center"
-          >
+
+        <Button variant="outline" asChild>
+          <CSVLink {...csv_link} className="flex items-center gap-2">
             <IoCloudDownloadOutline />
-            Download CSV
+            Export
           </CSVLink>
         </Button>
+        <Button variant="outline" onClick={resetFilters} className="flex gap-2">
+          <GrPowerReset />
+          Reset
+        </Button>
+
+        <Input
+          className="w-[110px]"
+          onChange={(e) => handlePageSize(e)}
+          placeholder="Page size"
+          aria-label="Rows per page"
+        />
       </div>
 
-      <p className="text-sm text-neutral-400">
-        {applicantTotalCount} applicant{applicantTotalCount === 1 ? "" : "s"} shown &middot;{" "}
-        {shortlistedApplicantCount} shortlisted
-      </p>
-
-      <div className="border rounded-md">
+      <div className="overflow-x-auto rounded-xl border border-white/10">
         <Table {...getTableProps()}>
           <TableHeader>
             {headerGroups.map((hg) => {
@@ -318,10 +373,20 @@ const DataTable = ({ data }) => {
                     const { key: headerKey, ...headerProps } =
                       header.getHeaderProps(header.getSortByToggleProps());
                     return (
-                      <TableHead key={headerKey} {...headerProps}>
-                        <div className="inline-flex gap-1 items-center">
+                      <TableHead
+                        key={headerKey}
+                        {...headerProps}
+                        scope="col"
+                        className="whitespace-nowrap text-xs uppercase tracking-wider text-zinc-400"
+                      >
+                        <div className="inline-flex items-center gap-1.5">
                           {header.render("Header")}
-                          <FaSortAmountDownAlt />
+                          {header.canSort !== false && (
+                            <FaSortAmountDownAlt
+                              className="h-3 w-3 text-zinc-600"
+                              aria-hidden="true"
+                            />
+                          )}
                         </div>
                       </TableHead>
                     );
@@ -331,15 +396,41 @@ const DataTable = ({ data }) => {
             })}
           </TableHeader>
           <TableBody {...getTableBodyProps()}>
+            {page.length === 0 && (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length + 1}
+                  className="py-14 text-center text-sm text-zinc-500"
+                >
+                  No applicants match these filters.
+                  <button
+                    type="button"
+                    onClick={resetFilters}
+                    className="ml-1 text-brand underline underline-offset-4"
+                  >
+                    Reset them
+                  </button>
+                  .
+                </TableCell>
+              </TableRow>
+            )}
             {page.map((row) => {
               prepareRow(row);
               const { key: rowKey, ...rowProps } = row.getRowProps();
               return (
-                <TableRow key={rowKey} {...rowProps}>
+                <TableRow
+                  key={rowKey}
+                  {...rowProps}
+                  className="border-white/5 transition-colors hover:bg-white/[0.03]"
+                >
                   {row.cells.map((cell) => {
                     const { key: cellKey, ...cellProps } = cell.getCellProps();
                     return (
-                      <TableCell key={cellKey} {...cellProps}>
+                      <TableCell
+                        key={cellKey}
+                        {...cellProps}
+                        className="whitespace-nowrap text-sm text-zinc-300"
+                      >
                         {cell.render("Cell")}
                       </TableCell>
                     );
@@ -353,13 +444,17 @@ const DataTable = ({ data }) => {
 
       <PaginationComp
         pageIndex={pageIndex}
-        pages={pageOptions.length}
         nextPage={nextPage}
         canNext={canNextPage}
         previousPage={previousPage}
         canPrev={canPreviousPage}
         goto={gotoPage}
         pageCount={pageCount}
+        summary={
+          applicantTotalCount === 0
+            ? "No applicants to show"
+            : `Showing ${firstRowOnPage} – ${lastRowOnPage} of ${applicantTotalCount} applicants`
+        }
       />
     </div>
   );

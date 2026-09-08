@@ -384,6 +384,27 @@ On top of that:
   department's own `tone` from the catalogue. Verified in the browser: 12 cards, every `href`
   a real `/join/<id>`, no empty descriptions.
 
+- **The application form** got the layout from the reference: a section navigator beside it
+  (highlighting the section you're actually in, via `IntersectionObserver` — the reference
+  showed numbered wizard steps, but this form is a single page, so pretending otherwise would
+  have been a lie), per-question numbering, character counters bound to the real
+  `FIELD_LIMITS.answer`, and a sticky action bar. The submit button lives in that bar, outside
+  the `<form>`, associated back to it with `form="application-form"` — verified end to end that
+  submission still works and both applications store correctly.
+- **The admin panel** got a KPI row (total, shortlisted, not shortlisted, departments covered),
+  a search field with an icon, Export/Reset actions, an empty state, hover rows, and shortlist
+  rendered as a status pill rather than a red/green block button.
+- **Pagination was rewritten.** It always rendered `pageIndex, +1, +2`, so the first page
+  vanished as soon as you moved past it and the list ran short at the end. It now renders a
+  windowed pager with first/last and ellipses, plus a "Showing 7 – 9 of 10 applicants" summary.
+  Verified by dropping the page size to 3: four pages, correct ranges on each.
+
+**Deliberately not built from the references:** navigation items for pages that don't exist
+(Timeline, FAQ, an admin sidebar with Dashboard/Analytics/Communications/Settings); "Under
+review" and "Rejected" statuses, since an application carries a `shortlisted` boolean and
+nothing else, so those filters would have queried something never stored; and the hero's photo
+collage, since there is no photography to put in it.
+
 **Removed as dead and broken:** `AllDepartments.jsx` and `BentoGridComp.jsx` (nothing rendered
 them, and `BentoGridComp` was an `async` function component inside a `"use client"` file, which
 React does not allow); `DeptHero.jsx`, which called `setIsLoading(false)` in an effect and so
