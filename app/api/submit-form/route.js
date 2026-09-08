@@ -1,7 +1,8 @@
 import { connect } from "@/lib/db";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
-import { SUBMISSION_DEADLINE, isValidDepartment } from "@/constants";
+import { SUBMISSION_DEADLINE } from "@/constants";
+import { validateApplication } from "@/lib/validateApplication";
 
 export const dynamic = "force-dynamic";
 
@@ -33,42 +34,17 @@ export async function POST(req) {
     const db = await connect();
     const data = await req.json();
 
-    const { Department, Questions, ...formFields } = data;
-
-    // The department has to be one that actually exists. Without this the
-    // route stored whatever string it was handed, so a crafted request could
-    // create applications for departments nobody runs - which then show up in
-    // the admin table, the department filter and the CSV export as real rows.
-    if (!isValidDepartment(Department)) {
-      return new Response(
-        JSON.stringify({ message: "That department does not exist." }),
-        { status: 400 }
-      );
+    // Every rule the form enforces in the browser is re-checked here, and the
+    // document to store is built from an allowlist rather than spread from the
+    // request body.
+    const validation = validateApplication(data, { email: userEmail });
+    if (validation.error) {
+      return new Response(JSON.stringify({ message: validation.error }), {
+        status: 400,
+      });
     }
 
-    // Questions must be a plain object of answers; an array or a primitive
-    // would be stored as-is and break the admin table and CSV formatting.
-    if (
-      Questions === null ||
-      typeof Questions !== "object" ||
-      Array.isArray(Questions)
-    ) {
-      return new Response(
-        JSON.stringify({ message: "Malformed application answers." }),
-        { status: 400 }
-      );
-    }
-
-    const regNoRegex = /^\d{2}[A-Z]{3}\d{4}$/;
-    if (formFields.RegistrationNumber && !regNoRegex.test(formFields.RegistrationNumber)) {
-      return new Response(
-        JSON.stringify({
-          message: "Registration number must be 2 numbers, 3 uppercase letters, and 4 numbers (e.g. 25BCE5612)",
-        }),
-        { status: 400 }
-      );
-    }
-
+    const { Department } = validation.fields;
     const collection = db.collection("formData");
 
     // The client submits both chosen departments concurrently, so a plain
@@ -94,11 +70,7 @@ export async function POST(req) {
       }
 
       transaction.create(collection.doc(), {
-        ...formFields,
-        Department,
-        Questions,
-        Email: userEmail,
-        shortlisted: false,
+        ...validation.fields,
         createdAt: new Date(),
       });
 

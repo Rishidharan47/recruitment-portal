@@ -90,6 +90,7 @@ lib/
   db.ts                    Firestore Admin SDK connection
   auth.js / auth-client.js better-auth server and client
   adminAuth.js             Shared admin session guard
+  validateApplication.js   Server-side validation + allowlisted document shape
 constants/index.js         Departments, questionnaire, CSV headers, deadline
 firestore.rules            Client access rules (deny-all; all access is server-side)
 ```
@@ -119,10 +120,11 @@ detail — root causes, reasoning and the evidence for each — is in **[WORK.md
   a single Firestore transaction.
 - **`shortlisted` and `Pref` were never written**, so the "not shortlisted" filter matched
   nothing and the Preference column was always blank.
-- **The department was never validated.** Any string in the request body was stored, so a
-  crafted request could create applications for departments that do not exist and have them
-  show up in the admin table, the filters and the CSV export. `Department` is now checked
-  against the catalogue and `Questions` must be a plain object.
+- **Nothing was validated on the server.** Every form rule lived in a browser-only zod schema,
+  and the stored document was spread from the request body — so a request sent outside the form
+  could store an application for a department that does not exist, with any fields it liked, of
+  any size. Validation now runs server-side (`lib/validateApplication.js`) and the document is
+  built from an allowlist, with `Email` always taken from the session.
 
 ### Security
 

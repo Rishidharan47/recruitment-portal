@@ -13,7 +13,12 @@ import {
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
-import { QuestionnaireData, GENERIC_MOTIVATION_QUESTION } from "@/constants";
+import {
+  QuestionnaireData,
+  GENERIC_MOTIVATION_QUESTION,
+  GENDER_OPTIONS,
+  YEAR_OPTIONS,
+} from "@/constants";
 import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
@@ -23,9 +28,6 @@ const normaliseQuestion = (question) =>
   typeof question === "string"
     ? { name: question, type: "generic", placeholder: "2-3 sentences" }
     : question;
-
-const YEAR_OPTIONS = ["1st Year", "2nd Year", "3rd Year", "4th Year"];
-const GENDER_OPTIONS = ["Male", "Female", "Other", "Prefer not to say"];
 
 const selectClasses =
   "flex h-10 w-full rounded-md border border-white/15 bg-white/5 px-3 py-2 text-sm text-white outline-none focus:border-white/40 disabled:cursor-not-allowed disabled:opacity-50";

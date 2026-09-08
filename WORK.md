@@ -87,7 +87,36 @@ AFTER  (check + write in one transaction):
   rows now stored  : 1  (should be 1)
 ```
 
-### 1c. The route stored whatever department string it was handed
+### 1c. The payload was validated in the browser only, and stored unfiltered
+
+Every rule the application form enforces — required name, phone format, gender, year of study,
+the motivation answer — lived in a zod schema in `components/FormComp.jsx`, which runs in the
+browser. The endpoint is reachable with `curl`, so none of it was actually enforced. The only
+server-side check was on `RegistrationNumber`, and it was written as
+`if (RegistrationNumber && !regex.test(...))` — a request that omitted the field entirely
+skipped the check.
+
+Worse, the document was assembled as `{ ...formFields, Department, Questions, ... }`, spreading
+whatever keys the request happened to contain straight into Firestore. Arbitrary fields — of
+arbitrary size — could be written into the applications collection.
+
+`lib/validateApplication.js` now re-checks every rule on the server and **returns the document
+to store**, built from an allowlist, so unknown keys are dropped rather than persisted. Bounds
+(`FIELD_LIMITS`) cap answer and name lengths and the number of answers. `Email` is always taken
+from the session, never from the body. Gender and year are checked against the same
+`GENDER_OPTIONS` / `YEAR_OPTIONS` the form's `<select>`s render from, so the accepted values and
+the offered values cannot drift.
+
+Verified against the running API — 12 malformed payloads each rejected with the right message
+(missing name, 150-character name, missing/badly formatted registration number, 5-digit phone,
+`Gender: "Robot"`, `Year of Study: "7th Year"`, missing motivation, 6,000-character answer,
+`Pref: "99"`, 40 answers, a non-string answer) — and for a request carrying
+`shortlisted: true`, `adminNote` and `evil` alongside valid data, the stored document contained
+only the allowlisted keys, with `shortlisted` still `false`. A submission with someone else's
+`Email` in the body was filed under the session's address. The real form still submits both
+applications correctly end to end.
+
+### 1d. The route stored whatever department string it was handed
 
 `Department` was never checked against the real catalogue — it was destructured straight out of
 the request body and written to Firestore. A crafted request (the form is not the only way to
@@ -102,7 +131,7 @@ The route now rejects a `Department` that is not in `DEPARTMENT_NAMES` (derived 
 that is not a plain object. Verified: bogus department → `400`, `Questions` as an array →
 `400`, valid submission → `200`, and nothing from the rejected requests reached the database.
 
-### 1d. Two smaller storage-shape fixes in the same route
+### 1e. Two smaller storage-shape fixes in the same route
 
 - **`shortlisted` was never initialised.** New documents had no `shortlisted` field at all,
   so the admin "Shortlisted: No" filter (`String(row.shortlisted) === "false"`) matched

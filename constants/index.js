@@ -54,6 +54,22 @@ export const SUBMISSION_DEADLINE =
 export const GENERIC_MOTIVATION_QUESTION =
   "Why do you want to join Organization Name?";
 
+// Shared by the form's <select>s and by the server-side validation, so the
+// options a user can pick and the values the API accepts stay in step.
+export const GENDER_OPTIONS = ["Male", "Female", "Other", "Prefer not to say"];
+export const YEAR_OPTIONS = ["1st Year", "2nd Year", "3rd Year", "4th Year"];
+
+// Upper bounds for stored text. Generous enough not to truncate a real
+// applicant, tight enough that the endpoint can't be used to write arbitrarily
+// large documents.
+export const FIELD_LIMITS = {
+  name: 100,
+  phone: 15,
+  answer: 5000,
+  questionKey: 400,
+  questionCount: 30,
+};
+
 // Contact Links
 export const LINKS = {
   instagram: "#",
