@@ -181,29 +181,29 @@ export const QuestionnaireData = [
     department: "Technical Writing",
     questions: [
       {
-        name: "poAx ZQPF iL0C *$ Peq# 2qu43N8V0TC8 c3^ pKl1ypL *D@DRew tB Dm2 pwS#kXdV5XM?",
+        name: "What kind of technical content do you enjoy writing or reading most?",
         type: "generic",
-        placeholder: "oN$5c *^fu lqx67xsv Djo Uz Zfa0R q0x (NJ(O6Pi3x(."
+        placeholder: "e.g. tutorials, API docs, blog posts, explainers"
       },
       {
-        name: "ixVI V4 gN8 ^*2R 5w900Q@ ₹$n q!o$ M$I7 @^p? b3 %V*G C8U3 t9xB FC1$ 9Lu, MDB0 PJn4 ₹z g₹xR e10xJ qQ^83dM?",
+        name: "Share a link to something you've written, or describe a piece of writing you're proud of and why it worked.",
         type: "long-text",
-        placeholder: "0nx0JW(2 XNJ9 9tw$ z@z%kUk 47 drBCnh0 kQ(M! !W₹xlqG."
+        placeholder: "A blog post, README, report, or documentation you wrote"
       },
       {
-        name: "QeV @e KzA #₹*6Bp zzV₹e hmw9 00!$PxK C4 OuO**Y3 e* ^e2 zLYcZmx9011 l*Hk6%RYv0y $k6#1#vQ8 RfB blv?",
+        name: "How do you usually simplify a complex technical topic for a non-expert reader?",
         type: "generic",
-        placeholder: "F.$., 8gI4Q$, j7cR, CWC(xm8CsG9!id37z, s7z%, (4@."
+        placeholder: "e.g. analogies, diagrams, step-by-step breakdowns"
       },
       {
-        name: "zpfb 0P $8E iEab$UB80% NhFbK$@ p lfxzYJx# qww 0Viq7RSl e8s ! uG0q-!3v^ z5vFxH1f?",
+        name: "Which tools have you used for writing or publishing content?",
         type: "generic",
-        placeholder: "0818%*c 6B3 #ZkjRc(x8M* xe HupbF6qTNx$C *Z2 Q1s 27G!p."
+        placeholder: "e.g. Markdown, Notion, Google Docs, static site generators"
       },
       {
-        name: "bK Zif# UA0 iP*wq li 61$ 7(z2!J8f kL₹ K@k!AbO PE # 1kEv uu3#^g, **0# A7 7u7G 4@#9k dx@B9WcKx eCrN?",
+        name: "Describe a time you had to explain something technical to someone with a very different background from yours. What did you do differently?",
         type: "long-text",
-        placeholder: "h0YJWzc $ZDz ₹8GIK@R%Y 3bqYLUx#(0*."
+        placeholder: "The topic, the audience, and what you changed in your explanation"
       }
     ],
   },
@@ -211,24 +211,24 @@ export const QuestionnaireData = [
     department: "Research & Development",
     questions: [
       {
-        name: "$nX EV T!Q y7I^ 3P qmro tTx ^7rkyz9j8f *VmrS0L3H(, %x$ qk7E ms 3fo Ucl1 3z l9sa0 vq 42r0*T₹Km#?",
+        name: "What's an emerging technology or research area you've been following, and what interests you about it?",
         type: "long-text",
-        placeholder: "G#lE(#9 tK^d D#7TS8o$DM, SEZn R3HT6d5K kz Rk5 Z$DJZ@0!cS, 3eE %$U A53 yR3P hq ioW8UIo^!U."
+        placeholder: "A technology, paper, or field you've read up on recently"
       },
       {
-        name: "cA7b 13 Rd3oW d 8k₹$H8q, 4lBd8, yu A#q2$6%Jy! 12Im #M1k J!v@!hWpT (X*w ^FZEux3-obkA!#p Pv xPD^q6PH 1Q@1ea.",
+        name: "Describe an experimental project or side project you built just to explore an idea, even if it didn't fully work.",
         type: "long-text",
-        placeholder: "*N7Ebqbr s%60 pz^#, #po 12c#E@fBv2 5ck cR5Q₹, !W0 ek#I $SG w%1#u9C."
+        placeholder: "What you tried, what you learned, what broke"
       },
       {
-        name: "wyRy8T 9$uf8W$ %Jg",
+        name: "Preferred area of research",
         type: "short-text",
-        placeholder: "^Mua-#U5pkk8-$%8"
+        placeholder: "e.g. AI/ML, robotics, blockchain, HCI"
       },
       {
-        name: "e8 xmi##vB3, M₹S₹ #sOK u0 xkqq*nseYRO 9TyxI 6AY SI6( w3 PzvB 0z JK ^XS wE%f$₹nwCC 80₹R7pJqD#?",
+        name: "How comfortable are you reading and applying ideas from academic papers or technical documentation? Give an example.",
         type: "long-text",
-        placeholder: "lBVmBT9Z Kq₹0xO# L^N8L$(7j, AKlIPlF7*3, am9."
+        placeholder: "A paper or spec you read and what you took from it"
       }
     ],
   },
@@ -236,24 +236,24 @@ export const QuestionnaireData = [
     department: "Hardware & IoT",
     questions: [
       {
-        name: "PRTFk( 98*XJKq xW*",
+        name: "Years of experience with electronics or embedded systems",
         type: "short-text",
-        placeholder: "B(3w-fhpk3ON-!Z^"
+        placeholder: "e.g. 1 year, self-taught, none yet"
       },
       {
-        name: "Mus9 GRiYd3S p₹WzKOC1V^ F@2 UOwYn098k x5d *7a B$t9^^P# Uofa?",
+        name: "Which hardware platforms or tools have you worked with?",
         type: "generic",
-        placeholder: "1.(. C₹3i.oU, g8$RzNC, njN300, yB$18S8z#3, YFpM@7#, KIWXk, 93z."
+        placeholder: "e.g. Arduino, Raspberry Pi, ESP32, soldering, PCB design"
       },
       {
-        name: "OXSON1z Z₹O Pe %2(% 37$kwYq $30b% 1kFxk70R, oa@x636Pu ₹1h 5(ce38qxkVDF, Xqp%q@ayU! p9$f(, H5V 0Oed9 8₹zV* 1i L0*09C9f 8Snu.",
+        name: "Describe a hardware or IoT project you've built or want to build, including any prototypes or circuits involved.",
         type: "long-text",
-        placeholder: "(zR7#Jp0 i3o#Ofq e1*f1h*kUbB!, r$( FJf$PHqywY, 6ul (9xXog(38 #1lk^bwK!ZF."
+        placeholder: "What it does, the components used, what stage it's at"
       },
       {
-        name: "lf(x !v63@$2x / xQg₹7B9uq 7wk y8@ 829l6Nkx 1₹1Q 4@(w0dU kF wgYPo1 c₹0 7kJfxBkB0!?",
+        name: "What's a hardware problem you've debugged (or would want to learn to debug) - a circuit that didn't work, a sensor giving bad readings, anything like that?",
         type: "long-text",
-        placeholder: "J.U. Q(#1dB, x@8EtEQqxx, 3*9, jQ^, AL3093 KE#TkZN, *7Z3R01u6, fz2*a, NYA."
+        placeholder: "The symptom, what you suspected, how you'd approach it"
       }
     ],
   },
@@ -261,34 +261,34 @@ export const QuestionnaireData = [
     department: "Cybersecurity",
     questions: [
       {
-        name: "kWgKYq4y Kc##₹d6 ^8xR",
+        name: "Have you used any security tools before?",
         type: "short-text",
-        placeholder: "(*u%f!AW"
+        placeholder: "e.g. Burp Suite, Wireshark, nmap, or none yet"
       },
       {
-        name: "xGezX4l! p3T^G7@ xlEw",
+        name: "Any CTFs or security challenges you've attempted?",
         type: "short-text",
-        placeholder: "9S@kX2(r"
+        placeholder: "e.g. picoCTF, HackTheBox, or none yet"
       },
       {
-        name: "G@iMo8TB29 80Lz9xM tE93",
+        name: "Which area of security interests you most?",
         type: "short-text",
-        placeholder: "8z5#R@s%"
+        placeholder: "e.g. web security, network security, cryptography"
       },
       {
-        name: "VkvoO 6w2q0Vql5 (1(t49 DEkN!3H3j)",
+        name: "Comfort level with Linux and the command line",
         type: "short-text",
-        placeholder: ""
+        placeholder: "e.g. beginner, comfortable, advanced"
       },
       {
-        name: "!kD7F7397kW iOBy q^:",
+        name: "What draws you to cybersecurity specifically?",
         type: "generic",
-        placeholder: "5z@p^0L1tD MBi / xm#(i@k3 / OqMQ@0 y9 j@"
+        placeholder: "e.g. problem-solving, ethical hacking, protecting systems"
       },
       {
-        name: "0rS0 N0 F!1 mA36x@ 11 F1eg P8 372₹h 3$k* rfv# D#EPk32%ER Nw315x %e₹z KoQH SBpQ?",
+        name: "Describe a time you found or thought about a security flaw in something you used, even informally - an app, a website, a login flow.",
         type: "long-text",
-        placeholder: "yqN7E3x₹ dJzf ZfC xb%q 19 tJ*x 0* xxh(^"
+        placeholder: "What you noticed and why it seemed like a weakness"
       }
     ],
   },
@@ -296,39 +296,39 @@ export const QuestionnaireData = [
     department: "Data Science",
     questions: [
       {
-        name: "9JS7 0U qm#!g c1hCLiad.",
+        name: "What got you interested in data science?",
         type: "generic",
-        placeholder: "BEXlli₹yM W#sizqTJ m8 #–5 iPlST^LQR, 14Z0$37R3 sq*q Vy8dyYud9, *6TWVX, m7e 7hB9ka$₹XNtK."
+        placeholder: "e.g. a course, a project, an internship, curiosity"
       },
       {
-        name: "eu9 1k Iw! vnNJ P^ 569₹ Yy8 zxGc !1kXanX %nSV?",
+        name: "Which languages or libraries have you used for data work?",
         type: "generic",
-        placeholder: "Pej₹ 19 K6#z bhPeL1G8s C0E (# 29t6 3xa J3#8 !5n Pj(q 7K2 JJ1! Fw (1uvtjx9a(."
+        placeholder: "e.g. Python, pandas, NumPy, scikit-learn, R"
       },
       {
-        name: "P1R4 Ct g125 qO12bLL?",
+        name: "Have you worked with machine learning models before?",
         type: "generic",
-        placeholder: "3IIX#ks zza2 NWCkQjE cx 9cHx 6c₹ zrqK#."
+        placeholder: "e.g. classification, regression, a Kaggle competition"
       },
       {
-        name: "Peyo wwEaio 970AUxL%3 kz k77zK 4Q8* Ek% YXz₹ Moi !6AM xMqh$I5 RH 3z8YwV1 gqofqm@h?",
+        name: "Familiarity with SQL",
         type: "short-text",
-        placeholder: "y.S. AjLqx, RnYlJt, XV0C8!-YqRkO, 1EB91Uz"
+        placeholder: "e.g. beginner, comfortable, advanced"
       },
       {
-        name: "H30x m7s zoR(k9 wz H1J qw9! zqz1vZq, 0q, 9E W*5bq(o AHSp#0qE !r!m(n(? w01QaI2 NkFz(i% I^R.",
+        name: "Describe a data project you've worked on, from the dataset to the insight or model you produced.",
         type: "long-text",
-        placeholder: "DSuayu3q 9N7 nW2C$R0, Z%m$ axzutk0d, 9O₹^ 7w0RmPlsRX48, 977 k67 ₹8MrXxH."
+        placeholder: "The dataset, your approach, and what you found"
       },
       {
-        name: "A@ (8V 7gxb H f$#(Ci k^uDIJ8? lDOBO 6q1 xj@Wwqx E%M@, mJp#o%.",
+        name: "A dataset or domain you'd love to explore",
         type: "short-text",
-        placeholder: "H6Ss-IA18*rF-@q0"
+        placeholder: "e.g. sports stats, climate data, campus data"
       },
       {
-        name: "$U1x %xD c$#x 91(C30? nR 73J, qt3n pu9z aLE jfx₹? WdjYx qW*b wqFJx7 urMJz8I, aGlNXu.",
+        name: "How would you explain a technical result from your work to someone without a data background?",
         type: "long-text",
-        placeholder: "Q0HXN %h1$ 3x31FS dMan7fO q4 xdrU"
+        placeholder: "Pick a real or hypothetical result and explain it simply"
       }
     ],
   },
@@ -336,34 +336,34 @@ export const QuestionnaireData = [
     department: "Design",
     questions: [
       {
-        name: "8!g( m(8 qgK DBkJvIC5₹A Bu Ky7xCa?",
+        name: "What kind of design work do you enjoy most - UI, branding, illustration, motion, something else?",
         type: "long-text",
-        placeholder: "sH8(₹9G 7g^9 L9fKU₹l 5Kg tkX₹%3(2 aO tuj(#W"
+        placeholder: "Your favourite kind of design work and why"
       },
       {
-        name: "G%#₹k JfBiEF Kz1%k %w^ bkN Zj7mj23$0₹h x!nz?",
+        name: "Tools you design with",
         type: "short-text",
-        placeholder: "J.U. Sb5c39@96, 38PyT₹Ml*T(, t#b^t"
+        placeholder: "e.g. Figma, Adobe XD, Illustrator, Photoshop"
       },
       {
-        name: "z3408 r₹Q#R OA$ tvi$R3z BX kuqh $W%t 7Or! 79 N(@.",
+        name: "Link to your portfolio or design work",
         type: "short-text",
-        placeholder: "SiMP2E!%a 8V me*F3 pX#z"
+        placeholder: "A Behance, Dribbble, Drive folder, or Instagram link"
       },
       {
-        name: "VI4 cC4 (zcH9848B35 *zkSzC*T 4q7h *fyGky 7K3$3?",
+        name: "How do you usually start a new design - research, sketching, moodboards?",
         type: "generic",
-        placeholder: "t9O / $a qxI MpxC@ qqn$^31vd78"
+        placeholder: "Walk through your typical process"
       },
       {
-        name: "SKl V78# WJx9 %S3 zEM T₹kwN HF lom@Y! Av!! qtq@?",
+        name: "Describe a design decision you made that you had to defend or explain to someone else.",
         type: "generic",
-        placeholder: "₹kbm₹EZ$ O3v0V z₹b ₹4er"
+        placeholder: "The decision, the pushback, and how you responded"
       },
       {
-        name: "vOky 0W₹ rFx8z0 c6 zxjxH₹0, 8i3Th3M vc 88n!q*r9 qnJ$Z(?",
+        name: "What's a piece of design (not necessarily your own) that you think is done really well, and why?",
         type: "generic",
-        placeholder: "8vdxd3# kSNvTZ7D f6gRXojN ^Sv4"
+        placeholder: "An app, poster, website, or product you admire"
       }
     ],
   },
@@ -371,39 +371,39 @@ export const QuestionnaireData = [
     department: "Gaming & Esports",
     questions: [
       {
-        name: "xx xk^ izYq Y*A (EvkBvp1TF *0l# 0My 3$5Z $CyC₹87? 61 Nz, 2^9qw 8pL?",
+        name: "Games or genres you're most into",
         type: "short-text",
-        placeholder: "u.z. I7m11, sQ@@x, i%5MNz 0w%KUz"
+        placeholder: "e.g. Valorant, FIFA, strategy games, all of the above"
       },
       {
-        name: "qc Kxx fzWD Hf1 It5@G KAZ78Kx K8Nxz999?",
+        name: "Have you organised, managed, or competed in any gaming events or tournaments before?",
         type: "generic",
-        placeholder: "06jxqpZc 1Mj WXQOk w9h* t8I #jB*uRgO"
+        placeholder: "What the event was and your role in it"
       },
       {
-        name: "26r 9qz RUX ₹l@1%0 w831 !O0$WKlS87?",
+        name: "What would you do differently to grow the campus gaming and esports scene?",
         type: "long-text",
-        placeholder: "*rSXq13 vqq1 7#xqngT3kX"
+        placeholder: "An idea for events, community building, or outreach"
       },
       {
-        name: "5P7# ₹K xzX eaSEqw 8O Pqv*s l9 m#OF *i@L #qF1 9c₹cnQ83V7 $b6pi3 0D10 hZeB#k?",
+        name: "Describe a time you had to coordinate a team or event under time pressure.",
         type: "long-text",
-        placeholder: "uY3v9%^C k0OX x@1 LAYS$H pN MxfY% (z NWG!"
+        placeholder: "What happened and how you kept things on track"
       },
       {
-        name: "!$9F 3^%* 3l@h(LA₹0 0%ye F%* ^ !r$k$*ko M7J fHn1aVp kk6 acxGzZ0xqS8",
+        name: "What's a gaming community (online or in-person) that you think does a great job engaging its members? What do they do well?",
         type: "long-text",
-        placeholder: "^18* VD iz^T 3yv srNY1vd64#N ^qJn₹0VL"
+        placeholder: "A Discord server, club, or community and what stands out"
       },
       {
-        name: "S( 9B1 CHER 5^8 8mD#s e9 $3@qE *b1 ( HAPu Q1D $t9^X jDNT l1 5j0₹?",
+        name: "If you were running a campus gaming event with a limited budget, how would you prioritise spending it?",
         type: "long-text",
-        placeholder: "C73w*khz X*jq vssWK Z6 vUcq@"
+        placeholder: "Venue, prizes, promotion, equipment - your call"
       },
       {
-        name: "1^3mo X@*9zF z6 z%x^ Cf*As%AkjxH eLf 9JK i#x8tVbjx8 FP? (0FexKqE0zbk, j$d, %9s1X W738^k, jzx)",
+        name: "Which role interests you more: playing competitively, or organising and managing events?",
         type: "generic",
-        placeholder: "6gz!J12JZ*h, 7^^, *Mv80 $t$BY@, Wmz."
+        placeholder: "e.g. player, organiser, both, streaming/content"
       }
     ],
   },
@@ -411,29 +411,29 @@ export const QuestionnaireData = [
     department: "Human Resources",
     questions: [
       {
-        name: "E98 W0 nm^$ 8k7Xp ekH, !kI06TSC g^B(WhH^ Jf0Dt1J.",
+        name: "Why do you want to be part of the team that builds this club's culture?",
         type: "generic",
-        placeholder: "6-4 B1ZRaFzQh"
+        placeholder: "2-4 sentences"
       },
       {
-        name: "#g5em#%r XrZ zQzG *9oi3Fl R8g QXDxq ZI34y2D7 34FtFKQI Ek zkNX uk^k ₹B ^dp86 3₹ q*B5bL₹ y0 gnzQ8B.",
+        name: "Describe a time you helped resolve a disagreement or conflict within a group you were part of.",
         type: "generic",
-        placeholder: "1I9k o9k ₹kEwPGBu #z W4zKQ VrI2BUH*$W"
+        placeholder: "What happened and what you did"
       },
       {
-        name: "%3e2’0 7(h @8JBc 99rlcFdf8 55QzU pzHL7FpX vVV7 j!C 3FSu, E9 $Tt3Qd YqtS ZI2a z61 W!kO%?",
+        name: "How would you go about making new members feel welcome and included?",
         type: "generic",
-        placeholder: "r0FAv 4g S1MJDW7YaOk"
+        placeholder: "A concrete idea, not just \"be friendly\""
       },
       {
-        name: "7$R8x ikZ1l y4b 7N6*7%j^ kz60h (!9xB M8mAb9* xP a3#TBqq₹E M9TcztQ) 9cq x4fzq3F 1^sqW (H7xj 7Zm(x*5c TD2j1870k@ K1x48R^, 8₹1TDra3 88UZnZuV#9#!, #$ xVtM0G *E%%N%z). *PjHH *6t$tHK1G%D Kw1b *7 c8*Cq71M0b 0xz 9UN NRRt $0S2xPq8jb$ CE*m#@%2, LJc FUR?",
+        name: "Tell us about a team or community (a club, sports team, workplace, volunteer group) you were part of that had a strong culture. What made it work, and what was your role in it?",
         type: "long-text",
-        placeholder: "3T@urAh 8Cb!C (R*8y1PY2!1 i7g8 tq@ qkz10h F₹Xq $3Q 3C9"
+        placeholder: "The group, what made its culture strong, and your part in it"
       },
       {
-        name: "hY’Y 1 ck 3^8 WUjvh CXpEz9 W OjHo% A8Y8$, T8₹ 7 zQjdT4s4 JU69 (N.S., PqNS# 43yVHszH7q, ptG3qw0 KD(L, 5Q M8kT-V₹mxj1 f$CzJz LBSFAj) Fi GhDVq 8%^chxx. $k7 47Fq 3K*Y 1 M$DQ3fQy#3 4r3 @Yt hfqd Hxb. q@! kZ uc7 %@uf0s 9j% du30 5 ₹0(Lz?",
+        name: "If a member of the club came to you with a complaint about another member, how would you handle the conversation? What would you want to make sure you did right?",
         type: "long-text",
-        placeholder: "yr*eA6 rLpP tCz$kI9C* N7x9y1Ls qt0 Urn9 4vWr₹*v$aa RqTzYP@0"
+        placeholder: "Walk through how you'd approach it, step by step"
       }
     ],
   },
@@ -441,29 +441,29 @@ export const QuestionnaireData = [
     department: "Events & Outreach",
     questions: [
       {
-        name: "R#w 1S h7@ @Rw8 ox c!#9 F!KMeV92?",
+        name: "How many events have you helped plan or run before, in any context?",
         type: "generic",
-        placeholder: "3-8 r@SNqaPP₹"
+        placeholder: "e.g. college fests, school events, volunteering"
       },
       {
-        name: "Azx co%u! kV%671 g% L79 x₹0(. XCO h3y1dC% 3sz %@D4g@vg1. 1kz% Np38G WLX x₹?",
+        name: "What's an event you attended that was really well organised? What made it work?",
         type: "generic",
-        placeholder: "@QdqB!mv xDvK N₹*6(O (n₹y 7aeJ8 OWb89vp@"
+        placeholder: "The event and what stood out about how it was run"
       },
       {
-        name: "9biYv tx QzN4 h$m SMO3 Lq$3 r2 LnYQkWWF. l^EFL6P( Cz %K^ 11 zLzBBZ rl qwsGf.",
+        name: "Describe your role in organising an event, including anything that went wrong and how it was handled.",
         type: "long-text",
-        placeholder: "703 v₹9$WI as Y8LaG8 #!H JUvu BSCJ$ i@Qv%zSuK7?"
+        placeholder: "What the event was, your responsibilities, and what you'd do differently"
       },
       {
-        name: "₹ZMz ne mvC t0lx! #(z 3a% h%e5 itTk8!Rm$ 0Z₹4DV *8 0llUylg8 7q1U6 Wx0X*!D*V/ma$*e(C9/kM8#@jl 3 I3ZQ58M#7 (@a!e01/U%0qNqB?",
+        name: "How would you approach getting a company or organisation to sponsor or collaborate with the club on an event?",
         type: "long-text",
-        placeholder: "!₹# aD9x!X gY2 qM#Xv₹Qvk GoTo0%N$ s#3*v₹W%sov!6"
+        placeholder: "Your pitch, who you'd reach out to, what you'd offer them"
       },
       {
-        name: "pS MH* eedj ikY pBt!7t*m x^kBVjYW28 jl *8Mv x!zx7 zx tL3hK%XUxxPBp, 6ObP*jk10Py, LfmkqGQL %7f.?",
+        name: "What's an event or collaboration you'd love to bring to the club if you had the resources?",
         type: "generic",
-        placeholder: "kwr7S7a %P%^$7h0 !7m%6 3f#1kxg9aY"
+        placeholder: "A workshop, hackathon, meetup, or partnership idea"
       }
     ],
   },
@@ -471,19 +471,19 @@ export const QuestionnaireData = [
     department: "Content & Media",
     questions: [
       {
-        name: "g@H Wxv v4₹ 8zd30#4b38 0* QGm ₹^ZRMVfx2 gsTzYGxtJD?",
+        name: "What kind of content do you most enjoy creating - writing, video, graphics, photography, something else?",
         type: "generic",
-        placeholder: "*Ep7QgT ₹X98 h7UY3kM₹TU"
+        placeholder: "Pick your strongest area and say why"
       },
       {
-        name: "P9 Z 91₹70 i9 6–9$, 3mB ^7HL #*8F jj2 S₹0 k18y₹!7 S7 lU02@vEW es !Ji kdT7Csn!a2R2?",
+        name: "Link to something you've created",
         type: "short-text",
-        placeholder: "2-66"
+        placeholder: "An Instagram post, video, article, or design"
       },
       {
-        name: "kgE3z Ljz0 x7yYf3y*h 0Qo? (kE0lPt / gq-@0ZeL0, hn57* hk79c0x, k8p.)",
+        name: "How would you describe our social media presence right now, and what would you improve?",
         type: "generic",
-        placeholder: "zsCxHw / G0-c!!MLi, B97fR S!9STQG, AuB9eqq vxX(0ogh, 8ZH."
+        placeholder: "Be specific - tone, frequency, format, platforms"
       }
     ],
   },
@@ -491,54 +491,54 @@ export const QuestionnaireData = [
     department: "Product Management",
     questions: [
       {
-        name: "kJ0k #q 4EqzQ #r^pAlwG.",
+        name: "Describe a product (an app, website, or physical product) you use often and would redesign if you could. What would you change and why?",
         type: "long-text",
-        placeholder: "%T01 A21(, kfJZ9R, UxRS@6aSw, zc9 zl$8xxvp 2hx! k7z'c 5F@v 07 ax zj6j."
+        placeholder: "The product, the problem with it, your proposed fix"
       },
       {
-        name: "q#x lr *C^ a3h3 %5 !9rx Zi# 70/hY $@p₹MBsWNz?",
+        name: "Walk us through how you'd go from an idea to a shipped feature - what steps would you take and who would you involve?",
         type: "long-text",
-        placeholder: "93(B 0GmLj$r7@ fyt o% Gd98? A3@₹ x0 qx0 @XvZ XM Pk40!, *eNxmj!Tq5, O6 E7Y9ik! zI ezXM 7k @YG H(9k?"
+        placeholder: "Your process, from idea to launch"
       },
       {
-        name: "q387 3pn aOxq $N3ao r@3XUy?",
+        name: "Any prior product, project management, or leadership experience?",
         type: "short-text",
-        placeholder: "qOno!Zz (B5F7lxl b7Re %#z@yhW7(r @ag0 1x5kx."
+        placeholder: "e.g. led a project, managed a small team, none yet"
       },
       {
-        name: "3rh38 %(%wo R457o8N^ 63lv R5t s0x7?",
+        name: "How do you decide what to prioritise when there's more to build than time allows?",
         type: "generic",
-        placeholder: "13jj#YEh: 9j$#FS, Mv(J IIy%XV, 1@@E6^20*q, 6ndhT@BS, k7^(kA7iSEv, Ps3claB4T, 6tBrH8 !d7JeDP."
+        placeholder: "e.g. impact vs effort, user feedback, deadlines"
       },
       {
-        name: "0dPr1 X b7e@ t! c1Kx ₹8^9m# igz$#3s*1 oZ jkGUHv i^85.",
+        name: "Tools you've used for planning or tracking work",
         type: "short-text",
-        placeholder: "RnM$F, @8ZfD89, w7DxWP8k, xzNiG8 1G4R3, pJ072#, Q*ID76zm exx*$ju, Md xE! 8B711 *H93%8^E."
+        placeholder: "e.g. Notion, Trello, Jira, spreadsheets"
       },
       {
-        name: "S9wK a5e Lu0VU$ 7₹ %@8 iOg!IM w!Kxb83 xDwIW7x 7y%S7g?",
+        name: "Describe a time you had to say no to a feature or idea someone else wanted. How did you handle it?",
         type: "generic",
-        placeholder: "ZfNgWI* Z8n*hxw, 66Tz^G9%a, A@^HM7B##, ZB#luB$O zO181%k, qfbiOw, (qUYqr$O3 *h87x6, z@F."
+        placeholder: "The idea, why you pushed back, how it landed"
       },
       {
-        name: "e% uCl'7O c₹EMkqmI z nhb($x 1qDF 8m!4 9LL'!F CV₹Mmx079L MPHb, ₹le^ X@@nY (y! gT?",
+        name: "What does a good working relationship between a PM and a design/engineering team look like to you?",
         type: "generic",
-        placeholder: "4Q'% B₹3F 9h M#@k6izqc@ 0Ar^ JFz*Ph8b @₹ Uk^I7d38 ₹Yr 7*₹W2AQ zxrx9Tq."
+        placeholder: "Be specific about what \"good\" looks like day to day"
       },
       {
-        name: "pVS x@Dm vkGWT jgo y3mm %8K jgp *@Hqq%#G*0#B !MxgP03K 1r #g/9k wTU7SV(1₹j?",
+        name: "A product you admire and why",
         type: "short-text",
-        placeholder: "Qv9k2^L: (cKs HW0₹ 7, 7 Ix 4, 5 0T 5, X3 MrUj 2$b% 5 1#9qC."
+        placeholder: "Any app or product, one or two lines on why"
       },
       {
-        name: "4qw z8t kvhDYs@R$sQ x83kx%198 GX99!6(^ #95 8lRZRqq8k Dy1i S^B9bbA $tLi5 s# @W?",
+        name: "How do you usually gather feedback from users?",
         type: "short-text",
-        placeholder: "Df0, 0KvhRT!J, F$ 87."
+        placeholder: "e.g. surveys, interviews, usage data, informal chats"
       },
       {
-        name: "xm @0pxz dtl1qRQB @(qx 0Fr'S DB8K L* ^D D72n?",
+        name: "If you joined this department, what's the first thing you'd want to work on or improve?",
         type: "long-text",
-        placeholder: "ze$UDY8e."
+        placeholder: "Be specific - a feature, a process, anything"
       }
     ],
   },
@@ -546,44 +546,44 @@ export const QuestionnaireData = [
     department: "Software Development",
     questions: [
       {
-        name: "P9Q zH₹ L#@k0RW( 7 yAdh 1x 1 7*Omxs7Hm @Q3 5%37 9PmKG N21O eitxq( (s.q., w7ep.7t, d5x, qc93qv). Qd1 KSZ 1M 7qi3xPE (3!3R JyS%h55 m31o WYc ape* 3(iEQ9 nV5otX3Hu G^ TF!1o q^Y(P8xr #1 #3C!Qdc. w659 L@ %YVZ#72 IKXk D7@9( %8-kN9YXh ₹2*@9O nLrJ 1q rx733 zLq dqb2I M0*1 ₹1A%j ^%xsks 6gZzT!L$ P1o KU UzMHuk (^₹h C4fG^M%.",
+        name: "What languages, frameworks or tools are you most comfortable with (e.g. JavaScript, Python, React, Node)? Tell us how you've used them.",
         type: "long-text",
-        placeholder: "$pAQ9v 1GK4 5*0W-7g-3bez 5iJ8₹N3^6 CBxU"
+        placeholder: "List your stack and a project where you used it"
       },
       {
-        name: "k7j LR \"it works on my machine\" a red flag in team development, and what concrete habits or setup choices do you use to ensure your code works on everyone else's environment too?",
+        name: "Why is \"it works on my machine\" a red flag in team development, and what concrete habits or setup choices do you use to ensure your code works on everyone else's environment too?",
         type: "generic",
-        placeholder: "y7L0xkH 2s₹9!rN^0x4 9W(jqW3Im@s KC160Bfrh"
+        placeholder: "e.g. version control, environment files, containers, CI"
       },
       {
-        name: "Z (u₹zeu c7Hq48a k8!$ls 12 n 1N79-OOzl18F zIg 8C%* Q#X1FR8 483 YJqAC qr o3% 7X8Nq@ fv X eHq7. zo7v J8@H#c 8( 0yi4 1zW'b qjkm2₹V 9gksoJ8Iy, x8I C@oE P$f7xfx1 ox81₹Ma!Y F(x2U0eW zk0%O Fqa %UR ₹x kzZT M*₹ U7 zE%x@! 0v* eJw 783U#J Qk!9 iLyk936 k(fN7a3* Ezp yTtu4n?",
+        name: "Describe a bug that took you a long time to track down. What was it, how did you eventually find it, and what did you change about how you debug afterward?",
         type: "long-text",
-        placeholder: "8.r. 1CY0Bl^XUN, 6y7a ^av^GM9z, 930xOl3IcN jli03q!"
+        placeholder: "The symptom, your debugging process, and the fix"
       },
       {
-        name: "V₹kLx 8AQ! G9*!A@q v1Kf1 1kb Y^4p !V3s$A! !8*xxzOk kISPY ₹G V fn* 0O$ uy503k v0^ *W*Szp^ Et(5gX. kb74SmK iYf$DD $7 1!Uqx 7xz 6yT0uiu03z wVb7xGN zP x!17sx% #110z (a$ya 9Bt, VM6, xT qhB yf₹TmND) D0D4 x₹XI 8btM 3z1i O5*p5UKe.",
+        name: "Tell us about a project - solo or with a team - you're proud of. What was your specific contribution, and what was the hardest technical decision you made (architecture, tooling, trade-offs)?",
         type: "long-text",
-        placeholder: "30U8b9V 19! tIpdE%, 736 8%%r₹(₹8M, LM#J ₹*x7qQ9, xwzsCbk^A, bsF."
+        placeholder: "The project, your role, and the decision you're proud of"
       },
       {
-        name: "yi8gnK7 VJW9 ^Q9Oqo FsC7avP 0PA",
+        name: "Link to your GitHub or a project you've built",
         type: "short-text",
-        placeholder: "O(zM-AukE8VY-Jmk"
+        placeholder: "A GitHub profile, repo link, or deployed project"
       },
       {
-        name: "UlTu 1nD*Y *h17 13AEe9qq CU#Ux7PY$ WWU%jYq 1Tp v**K3jb-^T7tCjS 8qbLk^VH N wLuyF3ly 18$0w K6 zV3g Gq233H9lPo D9fU eid(L gY10E qMK%hCmOD qM7x 8qp qOWFz k%gC qmW8uE?",
+        name: "How do you approach learning a new technology or framework you've never used before?",
         type: "generic",
-        placeholder: "8nj!Y7k zPAr 92x₹1C kA#%Z*b m9^ %uV!Cg7x"
+        placeholder: "e.g. docs first, build something small, follow a course"
       },
       {
-        name: "L8#6pkg₹ ^ s$e%38J(q q0@1Sux Cn* ^9@%ZddGKc3 Ys O1J IzfDmX0*V₹k zVB zay($( X*m K53mn03I 1₹Q89!b*#!Cm#h7 Lh!xw unZ E0b% 2^ 181ZE95$ li.",
+        name: "What does good code review feedback look like to you, on either side of it?",
         type: "generic",
-        placeholder: "iW!Q%AzV Q0b txqbvx$, cWH0(1xAI2Ox5₹x QE1mz, $1T 4p7t*H4$^L"
+        placeholder: "As the reviewer, or as the person receiving it"
       },
       {
-        name: "2#Y 73p₹xw kn qhP 77xDQWeB9 g*h?",
+        name: "Comfort with version control (Git)",
         type: "short-text",
-        placeholder: "s^ %8zz(m!"
+        placeholder: "e.g. beginner, comfortable, advanced"
       }
     ],
   },
