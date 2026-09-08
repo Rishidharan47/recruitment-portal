@@ -43,8 +43,13 @@ const CharacterCount = ({ value = "" }) => (
   </p>
 );
 
+// `color-scheme: dark` is the only thing that changes the native popup a
+// <select> opens - it's OS/browser chrome, not something Tailwind classes on
+// the element can reach. Without it the popup renders in the browser's
+// default light theme (white background, near-invisible against the page)
+// regardless of how the closed control itself is styled.
 const selectClasses =
-  "flex h-10 w-full rounded-md border border-white/15 bg-white/5 px-3 py-2 text-sm text-white outline-none focus:border-white/40 disabled:cursor-not-allowed disabled:opacity-50";
+  "flex h-10 w-full rounded-md border border-white/15 bg-white/5 px-3 py-2 text-sm text-white outline-none focus:border-white/40 disabled:cursor-not-allowed disabled:opacity-50 [color-scheme:dark]";
 
 const FormComp = ({ dept1, dept2 }) => {
   const { data: session, isPending } = authClient.useSession();
