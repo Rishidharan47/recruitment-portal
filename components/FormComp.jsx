@@ -14,6 +14,13 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
+import {
   QuestionnaireData,
   GENERIC_MOTIVATION_QUESTION,
   GENDER_OPTIONS,
@@ -42,14 +49,6 @@ const CharacterCount = ({ value = "" }) => (
     {value.length}/{FIELD_LIMITS.answer}
   </p>
 );
-
-// `color-scheme: dark` is the only thing that changes the native popup a
-// <select> opens - it's OS/browser chrome, not something Tailwind classes on
-// the element can reach. Without it the popup renders in the browser's
-// default light theme (white background, near-invisible against the page)
-// regardless of how the closed control itself is styled.
-const selectClasses =
-  "flex h-10 w-full rounded-md border border-white/15 bg-white/5 px-3 py-2 text-sm text-white outline-none focus:border-white/40 disabled:cursor-not-allowed disabled:opacity-50 [color-scheme:dark]";
 
 const FormComp = ({ dept1, dept2 }) => {
   const { data: session, isPending } = authClient.useSession();
@@ -548,22 +547,20 @@ const FormComp = ({ dept1, dept2 }) => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Gender</FormLabel>
-                    <FormControl>
-                      <select
-                        {...field}
-                        value={field.value || ""}
-                        className={selectClasses}
-                      >
-                        <option value="" disabled>
-                          Select gender
-                        </option>
+                    <Select value={field.value || ""} onValueChange={field.onChange}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select gender" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
                         {GENDER_OPTIONS.map((option) => (
-                          <option key={option} value={option}>
+                          <SelectItem key={option} value={option}>
                             {option}
-                          </option>
+                          </SelectItem>
                         ))}
-                      </select>
-                    </FormControl>
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -575,22 +572,20 @@ const FormComp = ({ dept1, dept2 }) => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Year of study</FormLabel>
-                    <FormControl>
-                      <select
-                        {...field}
-                        value={field.value || ""}
-                        className={selectClasses}
-                      >
-                        <option value="" disabled>
-                          Select year
-                        </option>
+                    <Select value={field.value || ""} onValueChange={field.onChange}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select year" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
                         {YEAR_OPTIONS.map((option) => (
-                          <option key={option} value={option}>
+                          <SelectItem key={option} value={option}>
                             {option}
-                          </option>
+                          </SelectItem>
                         ))}
-                      </select>
-                    </FormControl>
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}

@@ -420,6 +420,19 @@ On top of that:
   "n / 2 selected" counter.
 - **The nav bar and footer** were unstyled with an `<hr>`; both are now proper layout with a
   sticky, blurred header.
+- **The Gender and Year of Study dropdowns opened white, unreadable popups.** They were native
+  `<select>` elements; the popup a `<select>` opens is drawn by the browser itself, not the
+  page, so no class on the closed control reaches it. `color-scheme: dark` (first tried on the
+  elements, then moved to `:root` when that turned out to be unreliable per-element in Chrome)
+  is the CSS-level way to ask the browser to draw that popup in dark mode, but on the user's
+  actual Chrome/Windows setup it still rendered light — apparently overridden by something at
+  the browser or OS level (a forced-dark-mode flag is the likely culprit) that this app has no
+  way to detect or correct for. Rather than keep fighting a browser-drawn control from the page,
+  both fields are now the project's own shadcn `Select` (Radix UI) — a normal page-rendered
+  dropdown with no native popup involved, so this entire class of bug is now structurally
+  impossible regardless of the visitor's browser or OS dark-mode settings. Confirmed dark and
+  readable on the reporting user's own machine after the change; `color-scheme: dark` stays on
+  `:root` for other native chrome (scrollbars) since it's still doing that job correctly.
 - **A cursor-reactive ambient glow in the hero**, at the user's request, using the same
   technique as the Ergent dashboard's ambient background: raw pointer position lives in a ref
   (never React state), eased toward every animation frame with a 0.08 lerp, and written

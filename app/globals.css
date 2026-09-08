@@ -11,6 +11,14 @@
  */
 @layer base {
   :root {
+    /* Tells the browser to draw its own native chrome - scrollbars, any
+       future date/color inputs - in dark mode. The form's dropdowns used to
+       be native <select>s and relied on this, but some Chrome/Windows builds
+       don't honour it consistently for a <select> popup regardless of where
+       it's set; they're now the page-rendered shadcn Select instead, which
+       doesn't depend on this at all. */
+    color-scheme: dark;
+
     --background: 240 10% 4%;
     --foreground: 0 0% 98%;
 
